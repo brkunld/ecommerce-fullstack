@@ -381,14 +381,14 @@ Node.js + Express + TypeScript kullanarak çalışan temel REST API'yi oluşturm
 
 Backend'in büyümesini kolaylaştıracak modüler bir klasör yapısı oluşturulacaktır.
 
-* [ ] Routes yapısı
+* [x] Routes yapısı
 * [ ] Controllers
 * [ ] Services
-* [ ] Middleware
-* [ ] Validators
-* [ ] Utils
-* [ ] Config
-* [ ] Error handling yapısı
+* [x] Middleware
+* [x] Validators
+* [x] Utils
+* [x] Config
+* [x] Error handling yapısı
 
 Örnek yapı:
 
@@ -414,14 +414,14 @@ Business logic ile HTTP işlemlerini birbirinden ayırarak daha temiz ve sürdü
 
 ## 3️⃣ PostgreSQL + Prisma
 
-* [ ] PostgreSQL kurulumu
-* [ ] Database oluşturulması
-* [ ] Prisma kurulumu
-* [ ] Prisma configuration
-* [ ] Database connection
-* [ ] İlk migration
-* [ ] Prisma Client kullanımı
-* [ ] CRUD işlemlerinin Prisma ile gerçekleştirilmesi
+* [x] PostgreSQL kurulumu
+* [x] Database oluşturulması
+* [x] Prisma kurulumu
+* [x] Prisma configuration
+* [x] Database connection
+* [x] İlk migration
+* [x] Prisma Client kullanımı
+* [x] CRUD işlemlerinin Prisma ile gerçekleştirilmesi
 
 **Hedef:**
 
