@@ -362,14 +362,14 @@ Proje, teknolojileri ve backend/frontend mimarisini adım adım öğrenerek geli
 
 ## 1️⃣ Express + TypeScript Kurulumu
 
-* [x] Node.js projesinin oluşturulması
-* [x] Express.js kurulumu
-* [x] TypeScript kurulumu
-* [x] `tsconfig.json` yapılandırması
-* [x] Development script'lerinin hazırlanması
-* [x] İlk Express server'ın oluşturulması
-* [x] `/api/health` endpoint'inin oluşturulması
-* [x] Environment variables yapısının hazırlanması
+- [x] Node.js projesinin oluşturulması
+- [x] Express.js kurulumu
+- [x] TypeScript kurulumu
+- [x] `tsconfig.json` yapılandırması
+- [x] Development script'lerinin hazırlanması
+- [x] İlk Express server'ın oluşturulması
+- [x] `/api/health` endpoint'inin oluşturulması
+- [x] Environment variables yapısının hazırlanması
 
 **Hedef:**
 
@@ -381,14 +381,14 @@ Node.js + Express + TypeScript kullanarak çalışan temel REST API'yi oluşturm
 
 Backend'in büyümesini kolaylaştıracak modüler bir klasör yapısı oluşturulacaktır.
 
-* [x] Routes yapısı
-* [ ] Controllers
-* [ ] Services
-* [x] Middleware
-* [x] Validators
-* [x] Utils
-* [x] Config
-* [x] Error handling yapısı
+- [x] Routes yapısı
+- [ ] Controllers
+- [ ] Services
+- [x] Middleware
+- [x] Validators
+- [x] Utils
+- [x] Config
+- [x] Error handling yapısı
 
 Örnek yapı:
 
@@ -414,14 +414,14 @@ Business logic ile HTTP işlemlerini birbirinden ayırarak daha temiz ve sürdü
 
 ## 3️⃣ PostgreSQL + Prisma
 
-* [x] PostgreSQL kurulumu
-* [x] Database oluşturulması
-* [x] Prisma kurulumu
-* [x] Prisma configuration
-* [x] Database connection
-* [x] İlk migration
-* [x] Prisma Client kullanımı
-* [x] CRUD işlemlerinin Prisma ile gerçekleştirilmesi
+- [x] PostgreSQL kurulumu
+- [x] Database oluşturulması
+- [x] Prisma kurulumu
+- [x] Prisma configuration
+- [x] Database connection
+- [x] İlk migration
+- [x] Prisma Client kullanımı
+- [x] CRUD işlemlerinin Prisma ile gerçekleştirilmesi
 
 **Hedef:**
 
@@ -433,12 +433,12 @@ Backend ile PostgreSQL arasındaki bağlantıyı kurmak ve database işlemlerini
 
 İlk database entity'si olarak kullanıcı sistemi oluşturulacaktır.
 
-* [ ] User model
-* [ ] User migration
-* [ ] User repository/service işlemleri
-* [ ] User CRUD
-* [ ] Unique email kontrolü
-* [ ] User role alanı
+- [x] User model
+- [x] User migration
+- [x] User repository/service işlemleri
+- [x] User CRUD
+- [x] Unique email kontrolü
+- [x] User role alanı
 
 Temel roller:
 
@@ -459,20 +459,20 @@ Authentication sisteminin temel işlemleri oluşturulacaktır.
 
 ### Register
 
-* [ ] Register endpoint
-* [ ] Request validation
-* [ ] Email kontrolü
-* [ ] Password hashing
-* [ ] User oluşturma
-* [ ] Response yapısı
+- [x] Register endpoint
+- [x] Request validation
+- [x] Email kontrolü
+- [x] Password hashing
+- [x] User oluşturma
+- [x] Response yapısı
 
 ### Login
 
-* [ ] Login endpoint
-* [ ] Email kontrolü
-* [ ] Password doğrulama
-* [ ] Authentication işlemi
-* [ ] JWT oluşturma
+- [x] Login endpoint
+- [x] Email kontrolü
+- [x] Password doğrulama
+- [x] Authentication işlemi
+- [x] JWT oluşturma
 
 Endpoint'ler:
 
@@ -491,13 +491,13 @@ Kullanıcıların güvenli şekilde kayıt olup giriş yapabilmesini sağlamak.
 
 Authentication sisteminin güvenli hale getirilmesi.
 
-* [ ] JWT oluşturma
-* [ ] JWT doğrulama
-* [ ] Authentication middleware
-* [ ] Current user bilgisi
-* [ ] Authorization middleware
-* [ ] Role-based access control
-* [ ] Customer/Admin yetkilendirmesi
+- [ ] JWT oluşturma
+- [ ] JWT doğrulama
+- [ ] Authentication middleware
+- [ ] Current user bilgisi
+- [ ] Authorization middleware
+- [ ] Role-based access control
+- [ ] Customer/Admin yetkilendirmesi
 
 Örnek:
 
@@ -532,25 +532,25 @@ E-ticaret sisteminin temel ürün yapısı oluşturulacaktır.
 
 ### Category
 
-* [ ] Category model
-* [ ] Category CRUD
-* [ ] Category validation
-* [ ] Category/Product relationship
+- [ ] Category model
+- [ ] Category CRUD
+- [ ] Category validation
+- [ ] Category/Product relationship
 
 ### Product
 
-* [ ] Product model
-* [ ] Product CRUD
-* [ ] Product validation
-* [ ] Price management
-* [ ] Stock management
-* [ ] Category relationship
-* [ ] Product listing
-* [ ] Product details
-* [ ] Search
-* [ ] Filtering
-* [ ] Sorting
-* [ ] Pagination
+- [ ] Product model
+- [ ] Product CRUD
+- [ ] Product validation
+- [ ] Price management
+- [ ] Stock management
+- [ ] Category relationship
+- [ ] Product listing
+- [ ] Product details
+- [ ] Search
+- [ ] Filtering
+- [ ] Sorting
+- [ ] Pagination
 
 Endpoint örnekleri:
 
@@ -572,16 +572,16 @@ E-ticaret mağazasının ürün ve kategori altyapısını tamamlamak.
 
 Kullanıcı bazlı alışveriş sepeti sistemi geliştirilecektir.
 
-* [ ] Cart model
-* [ ] CartItem model
-* [ ] User/Cart relationship
-* [ ] Product/CartItem relationship
-* [ ] Sepete ürün ekleme
-* [ ] Sepetten ürün çıkarma
-* [ ] Miktar güncelleme
-* [ ] Sepet temizleme
-* [ ] Toplam fiyat hesaplama
-* [ ] Stok kontrolü
+- [ ] Cart model
+- [ ] CartItem model
+- [ ] User/Cart relationship
+- [ ] Product/CartItem relationship
+- [ ] Sepete ürün ekleme
+- [ ] Sepetten ürün çıkarma
+- [ ] Miktar güncelleme
+- [ ] Sepet temizleme
+- [ ] Toplam fiyat hesaplama
+- [ ] Stok kontrolü
 
 Endpoint'ler:
 
@@ -603,15 +603,15 @@ Kullanıcıların ürünleri sepete ekleyip yönetebileceği tam bir cart sistem
 
 Sepetin siparişe dönüştürülmesi.
 
-* [ ] Order model
-* [ ] OrderItem model
-* [ ] Cart → Order dönüşümü
-* [ ] Order oluşturma
-* [ ] Order details
-* [ ] Order history
-* [ ] Kullanıcının kendi siparişlerini görüntülemesi
-* [ ] Admin'in tüm siparişleri görüntülemesi
-* [ ] Order status
+- [ ] Order model
+- [ ] OrderItem model
+- [ ] Cart → Order dönüşümü
+- [ ] Order oluşturma
+- [ ] Order details
+- [ ] Order history
+- [ ] Kullanıcının kendi siparişlerini görüntülemesi
+- [ ] Admin'in tüm siparişleri görüntülemesi
+- [ ] Order status
 
 Sipariş durumları:
 
@@ -642,12 +642,12 @@ Sepet → Sipariş akışını oluşturmak ve sipariş yaşam döngüsünü yön
 
 Sipariş ve stok işlemlerinin güvenli şekilde gerçekleştirilmesi.
 
-* [ ] Database transaction
-* [ ] Stock validation
-* [ ] Stock decrease
-* [ ] Transaction rollback
-* [ ] Race condition problemlerinin incelenmesi
-* [ ] Concurrent order senaryolarının yönetilmesi
+- [ ] Database transaction
+- [ ] Stock validation
+- [ ] Stock decrease
+- [ ] Transaction rollback
+- [ ] Race condition problemlerinin incelenmesi
+- [ ] Concurrent order senaryolarının yönetilmesi
 
 Sipariş oluşturma akışı:
 
@@ -687,29 +687,29 @@ Backend API tamamlandıktan sonra kullanıcı arayüzü geliştirilecektir.
 
 ### Frontend Setup
 
-* [ ] React kurulumu
-* [ ] TypeScript kurulumu
-* [ ] React Router
-* [ ] Axios
-* [ ] API client
-* [ ] Environment configuration
-* [ ] Component structure
+- [ ] React kurulumu
+- [ ] TypeScript kurulumu
+- [ ] React Router
+- [ ] Axios
+- [ ] API client
+- [ ] Environment configuration
+- [ ] Component structure
 
 ### Customer Interface
 
-* [ ] Homepage
-* [ ] Product listing
-* [ ] Product details
-* [ ] Category pages
-* [ ] Search
-* [ ] Filtering
-* [ ] Login
-* [ ] Register
-* [ ] User profile
-* [ ] Shopping cart
-* [ ] Checkout
-* [ ] Order history
-* [ ] Order details
+- [ ] Homepage
+- [ ] Product listing
+- [ ] Product details
+- [ ] Category pages
+- [ ] Search
+- [ ] Filtering
+- [ ] Login
+- [ ] Register
+- [ ] User profile
+- [ ] Shopping cart
+- [ ] Checkout
+- [ ] Order history
+- [ ] Order details
 
 ### API Integration
 
@@ -737,39 +737,39 @@ Admin kullanıcılar için ayrı bir yönetim paneli oluşturulacaktır.
 
 ### Dashboard
 
-* [ ] Total users
-* [ ] Total products
-* [ ] Total orders
-* [ ] Total revenue
-* [ ] Low-stock products
-* [ ] Recent orders
+- [ ] Total users
+- [ ] Total products
+- [ ] Total orders
+- [ ] Total revenue
+- [ ] Low-stock products
+- [ ] Recent orders
 
 ### Product Management
 
-* [ ] Product list
-* [ ] Create product
-* [ ] Edit product
-* [ ] Delete product
-* [ ] Stock management
+- [ ] Product list
+- [ ] Create product
+- [ ] Edit product
+- [ ] Delete product
+- [ ] Stock management
 
 ### Category Management
 
-* [ ] Category list
-* [ ] Create category
-* [ ] Edit category
-* [ ] Delete category
+- [ ] Category list
+- [ ] Create category
+- [ ] Edit category
+- [ ] Delete category
 
 ### Order Management
 
-* [ ] All orders
-* [ ] Order details
-* [ ] Update order status
+- [ ] All orders
+- [ ] Order details
+- [ ] Update order status
 
 ### User Management
 
-* [ ] User list
-* [ ] User details
-* [ ] Role management
+- [ ] User list
+- [ ] User details
+- [ ] Role management
 
 **Hedef:**
 
@@ -781,16 +781,16 @@ E-ticaret sisteminin tüm yönetim işlemlerinin gerçekleştirilebildiği bir a
 
 Uygulamanın container ortamında çalıştırılması.
 
-* [ ] Docker temelleri
-* [ ] Dockerfile
-* [ ] Docker image
-* [ ] Docker container
-* [ ] Docker Compose
-* [ ] Backend container
-* [ ] PostgreSQL container
-* [ ] Frontend container
-* [ ] Environment variables
-* [ ] Development environment
+- [ ] Docker temelleri
+- [ ] Dockerfile
+- [ ] Docker image
+- [ ] Docker container
+- [ ] Docker Compose
+- [ ] Backend container
+- [ ] PostgreSQL container
+- [ ] Frontend container
+- [ ] Environment variables
+- [ ] Development environment
 
 Örnek yapı:
 
@@ -818,33 +818,33 @@ Uygulamanın production ortamına taşınması.
 
 ### Backend
 
-* [ ] Production environment
-* [ ] Environment variables
-* [ ] Database configuration
-* [ ] Build process
-* [ ] API deployment
+- [ ] Production environment
+- [ ] Environment variables
+- [ ] Database configuration
+- [ ] Build process
+- [ ] API deployment
 
 ### Frontend
 
-* [ ] Production build
-* [ ] Environment configuration
-* [ ] Frontend deployment
+- [ ] Production build
+- [ ] Environment configuration
+- [ ] Frontend deployment
 
 ### Database
 
-* [ ] Production PostgreSQL
-* [ ] Production migrations
-* [ ] Database security
+- [ ] Production PostgreSQL
+- [ ] Production migrations
+- [ ] Database security
 
 ### Production
 
-* [ ] CORS configuration
-* [ ] Error handling
-* [ ] Logging
-* [ ] Health checks
-* [ ] Monitoring
-* [ ] HTTPS
-* [ ] CI/CD pipeline
+- [ ] CORS configuration
+- [ ] Error handling
+- [ ] Logging
+- [ ] Health checks
+- [ ] Monitoring
+- [ ] HTTPS
+- [ ] CI/CD pipeline
 
 Son hedef:
 
