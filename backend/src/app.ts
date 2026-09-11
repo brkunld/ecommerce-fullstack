@@ -1,5 +1,7 @@
-import express, { type Application, type Request, type Response } from 'express';
+import express, { type Application} from 'express';
 import cors from 'cors';
+import apiRoutes from './routes/index.js';
+import { errorHandler } from './middleware/errorHandler.js';
 
 const app: Application = express();
 
@@ -8,12 +10,8 @@ app.use(cors());
 app.use(express.json());
 
 // Sağlık kontrolü (Health check) endpoint'i
-app.get('/api/health', (req: Request, res: Response) => {
-  res.status(200).json({
-    status: 'success',
-    message: 'E-Ticaret REST API sorunsuz çalışıyor!',
-    timestamp: new Date().toISOString()
-  });
-});
+app.use('/api', apiRoutes);
+
+app.use(errorHandler);
 
 export default app;
