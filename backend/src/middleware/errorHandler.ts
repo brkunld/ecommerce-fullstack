@@ -1,17 +1,29 @@
-import { type Request, type Response, type NextFunction } from 'express';
-
-export interface AppError extends Error {
-  statusCode?: number;
-}
+import { type Request, type Response, type NextFunction } from "express";
+import { AppError } from "../utils/AppError.js";
 
 export const errorHandler = (
-  err: AppError,
+  err: Error,
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
-  const statusCode = err.statusCode || 500;
-  const message = err.message || 'Sunucu hatası oluştu';
+  let statusCode = 500;
+  let message = "Beklenmeyen bir sunucu hatası oluştu";
+
+  // 1. Durum: Hata bizim yazdığımız kontrollü bir AppError mu?
+  if (err instanceof AppError) {
+    statusCode = err.statusCode; // Örneğin: 400, 401, 404
+    message = err.message; // Örneğin: "Şifreniz hatalı!"
+  }
+  // 2. Durum: Hayır, beklenmeyen bir sistem çökmesi (Bug) yaşandı!
+  else {
+    // statusCode varsayılan olarak 500 kalır.
+    // Canlıdaysa kullanıcı sadece "Beklenmeyen bir sunucu hatası oluştu" görür.
+    // Ama geliştirme ortamındaysan (development) hatayı çözebilmen için gerçek mesajı görürsün:
+    if (process.env.NODE_ENV === "development") {
+      message = err.message;
+    }
+  }
 
   console.error(`❌ [Hata] ${req.method} ${req.url}:`, err.message);
 
@@ -24,13 +36,13 @@ export const errorHandler = (
 
   // 1. Önce herkese gidecek olan standart (güvenli) cevabı hazırlıyoruz
   const responseBody: ErrorResponse = {
-    status: 'error',
+    status: "error",
     statusCode: statusCode,
-    message: message
+    message: message,
   };
 
   // 2. Eğer geliştirme (development) ortamındaysak, hata detayını objeye sonradan ekliyoruz
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === "development") {
     responseBody.stack = err.stack;
   }
 
