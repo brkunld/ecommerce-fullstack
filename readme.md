@@ -367,8 +367,8 @@ Proje, teknolojileri ve backend/frontend mimarisini adım adım öğrenerek geli
 * [x] TypeScript kurulumu
 * [x] `tsconfig.json` yapılandırması
 * [x] Development script'lerinin hazırlanması
-* [ ] İlk Express server'ın oluşturulması
-* [ ] `/api/health` endpoint'inin oluşturulması
+* [x] İlk Express server'ın oluşturulması
+* [x] `/api/health` endpoint'inin oluşturulması
 * [x] Environment variables yapısının hazırlanması
 
 **Hedef:**
