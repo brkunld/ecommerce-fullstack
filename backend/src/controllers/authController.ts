@@ -1,9 +1,15 @@
 import { type Request, type Response, type NextFunction } from "express";
 import bcrypt from "bcryptjs";
-import { findUserByEmail, createUser } from "../services/userService.js";
+import {
+  findUserByEmail,
+  createUser,
+  findUserById,
+} from "../services/userService.js";
 import { generateToken } from "../utils/jwt.js";
 import { AppError } from "../utils/AppError.js";
 import prisma from "../config/prisma.js";
+import { AuthRequest } from "../middleware/authMiddleware.js";
+import { type JwtPayload } from "../utils/jwt.js";
 
 // 1. REGISTER (Kayıt Olma)
 export const register = async (
@@ -102,6 +108,27 @@ export const login = async (
       data: {
         user: safeUser,
         token,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getMe = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    let user = await findUserById(req.user!.id);
+    if (!user) {
+      throw new AppError("Kullanıcı bulunamadı", 404);
+    }
+    res.status(200).json({
+      status: "success",
+      data: {
+        user,
       },
     });
   } catch (error) {

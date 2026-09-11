@@ -491,13 +491,13 @@ Kullanıcıların güvenli şekilde kayıt olup giriş yapabilmesini sağlamak.
 
 Authentication sisteminin güvenli hale getirilmesi.
 
-- [ ] JWT oluşturma
-- [ ] JWT doğrulama
-- [ ] Authentication middleware
-- [ ] Current user bilgisi
-- [ ] Authorization middleware
-- [ ] Role-based access control
-- [ ] Customer/Admin yetkilendirmesi
+- [x] JWT oluşturma
+- [x] JWT doğrulama
+- [x] Authentication middleware
+- [x] Current user bilgisi
+- [x] Authorization middleware
+- [x] Role-based access control
+- [x] Customer/Admin yetkilendirmesi
 
 Örnek:
 
