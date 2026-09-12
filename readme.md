@@ -539,18 +539,18 @@ E-ticaret sisteminin temel ürün yapısı oluşturulacaktır.
 
 ### Product
 
-- [ ] Product model
-- [ ] Product CRUD
-- [ ] Product validation
-- [ ] Price management
-- [ ] Stock management
-- [ ] Category relationship
-- [ ] Product listing
-- [ ] Product details
-- [ ] Search
-- [ ] Filtering
-- [ ] Sorting
-- [ ] Pagination
+- [x] Product model
+- [x] Product CRUD
+- [x] Product validation
+- [x] Price management
+- [x] Stock management
+- [x] Category relationship
+- [x] Product listing
+- [x] Product details
+- [x] Search
+- [x] Filtering
+- [x] Sorting
+- [x] Pagination
 
 Endpoint örnekleri:
 
