@@ -382,8 +382,8 @@ Node.js + Express + TypeScript kullanarak çalışan temel REST API'yi oluşturm
 Backend'in büyümesini kolaylaştıracak modüler bir klasör yapısı oluşturulacaktır.
 
 - [x] Routes yapısı
-- [ ] Controllers
-- [ ] Services
+- [x] Controllers
+- [x] Services
 - [x] Middleware
 - [x] Validators
 - [x] Utils
@@ -532,10 +532,10 @@ E-ticaret sisteminin temel ürün yapısı oluşturulacaktır.
 
 ### Category
 
-- [ ] Category model
-- [ ] Category CRUD
-- [ ] Category validation
-- [ ] Category/Product relationship
+- [x] Category model
+- [x] Category CRUD
+- [x] Category validation
+- [x] Category/Product relationship
 
 ### Product
 
