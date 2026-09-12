@@ -9,7 +9,6 @@ import { generateToken } from "../utils/jwt.js";
 import { AppError } from "../utils/AppError.js";
 import prisma from "../config/prisma.js";
 import { AuthRequest } from "../middleware/authMiddleware.js";
-import { type JwtPayload } from "../utils/jwt.js";
 
 // 1. REGISTER (Kayıt Olma)
 export const register = async (
