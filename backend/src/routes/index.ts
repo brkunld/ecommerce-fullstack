@@ -2,7 +2,7 @@ import { Router, type Request, type Response } from "express";
 import authRoutes from "./authRoutes.js";
 import categoryRoutes from "./categoryRoutes.js";
 import productRoutes from "./productRoutes.js";
-
+import cartRoutes from "./cartRoutes.js";
 const router: Router = Router();
 
 router.get("/health", (req: Request, res: Response) => {
@@ -16,5 +16,6 @@ router.get("/health", (req: Request, res: Response) => {
 router.use("/auth", authRoutes);
 router.use("/categories", categoryRoutes);
 router.use("/products", productRoutes);
+router.use("/cart", cartRoutes);
 
 export default router;

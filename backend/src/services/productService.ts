@@ -55,9 +55,11 @@ export const updateProduct = (id: string, data: Partial<CreateProductData>) => {
   return prisma.product.update({ where: { id }, data: updateData });
 };
 
+//soft delete
 export const deleteProduct = (id: string) => {
-  return prisma.product.delete({
+  return prisma.product.update({
     where: { id },
+    data: { isActive: false },
   });
 };
 
@@ -78,11 +80,11 @@ export const getAllProducts = async (params: ProductQueryParams = {}) => {
   }
   if (params.minPrice !== undefined || params.maxPrice !== undefined) {
     where.price = {};
-    if (params.minPrice !== undefined) where.price.gte = params.minPrice;
-    if (params.maxPrice !== undefined) where.price.lte = params.maxPrice;
+    if (params.minPrice !== undefined) where.price.gte = Number(params.minPrice);
+    if (params.maxPrice !== undefined) where.price.lte = Number(params.maxPrice);
   }
   if (params.featured !== undefined) {
-    where.featured = params.featured;
+    where.featured = String(params.featured) === "true";
   }
 
   const [total, products] = await Promise.all([

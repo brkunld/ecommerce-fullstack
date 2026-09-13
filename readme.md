@@ -572,16 +572,16 @@ E-ticaret mağazasının ürün ve kategori altyapısını tamamlamak.
 
 Kullanıcı bazlı alışveriş sepeti sistemi geliştirilecektir.
 
-- [ ] Cart model
-- [ ] CartItem model
-- [ ] User/Cart relationship
-- [ ] Product/CartItem relationship
-- [ ] Sepete ürün ekleme
-- [ ] Sepetten ürün çıkarma
-- [ ] Miktar güncelleme
-- [ ] Sepet temizleme
-- [ ] Toplam fiyat hesaplama
-- [ ] Stok kontrolü
+- [x] Cart model
+- [x] CartItem model
+- [x] User/Cart relationship
+- [x] Product/CartItem relationship
+- [x] Sepete ürün ekleme
+- [x] Sepetten ürün çıkarma
+- [x] Miktar güncelleme
+- [x] Sepet temizleme
+- [x] Toplam fiyat hesaplama
+- [x] Stok kontrolü
 
 Endpoint'ler:
 
