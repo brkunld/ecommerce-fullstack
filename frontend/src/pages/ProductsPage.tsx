@@ -89,22 +89,33 @@ export default function ProductsPage() {
     fetchProducts();
   }, [selectedCategory, searchTerm, sortOption, page]);
 
+  // URL parametreleri her değiştiğinde (örn: Navbar'dan arama yapıldığında) state'leri senkronize et
+  useEffect(() => {
+    const currentSearch = searchParams.get("search") || "";
+    const currentCategory = searchParams.get("categoryId") || "";
+    setSearchTerm(currentSearch);
+    setSelectedCategory(currentCategory);
+    setPage(1);
+  }, [searchParams]);
+
   // Arama formu submit olduğunda
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setPage(1); // Aramada 1. sayfaya dön
+    setPage(1);
+    const params: Record<string, string> = {};
+    if (searchTerm.trim()) params.search = searchTerm.trim();
+    if (selectedCategory) params.categoryId = selectedCategory;
+    setSearchParams(params);
   };
 
   // Kategori seçildiğinde
   const handleCategorySelect = (catId: string) => {
     setSelectedCategory(catId);
     setPage(1);
-    // URL'yi güncelle
-    if (catId) {
-      setSearchParams({ categoryId: catId });
-    } else {
-      setSearchParams({});
-    }
+    const params: Record<string, string> = {};
+    if (searchTerm.trim()) params.search = searchTerm.trim();
+    if (catId) params.categoryId = catId;
+    setSearchParams(params);
   };
 
   return (
@@ -312,6 +323,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     borderRadius: "8px",
     border: "1px solid #cbd5e1",
     fontSize: "14px",
+    color: "#0f172a",
     outline: "none",
     boxSizing: "border-box",
   },

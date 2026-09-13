@@ -85,6 +85,24 @@ export default function OrderDetailPage() {
       minute: '2-digit',
     }).format(new Date(isoString));
 
+  // Ürün görselini güvenli şekilde alma (dizi, json string veya url desteği)
+  const getProductImage = (images?: string[] | string): string => {
+    try {
+      if (Array.isArray(images) && images.length > 0) return images[0];
+      if (typeof images === 'string') {
+        const trimmed = images.trim();
+        if (trimmed.startsWith('[')) {
+          const parsed = JSON.parse(trimmed);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed[0];
+        }
+        if (trimmed.startsWith('http')) return trimmed;
+      }
+    } catch {
+      // fallback
+    }
+    return 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600';
+  };
+
   // Sipariş durumu konfigürasyonu (badge renkleri, etiket ve ikon)
   const getStatusConfig = (status: Order['status']) => {
     switch (status) {
@@ -189,15 +207,19 @@ export default function OrderDetailPage() {
             <div style={styles.itemsList}>
               {order.items.map((item) => (
                 <div key={item.id} style={styles.itemRow}>
-                  <img
-                    src={item.product?.images?.[0] || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300'}
-                    alt={item.product?.name || 'Ürün'}
-                    style={styles.itemImage}
-                  />
+                  <Link to={`/products/${item.productId}`} style={styles.itemImageWrapper}>
+                    <img
+                      src={getProductImage(item.product?.images)}
+                      alt={item.product?.name || 'Ürün'}
+                      style={styles.itemImage}
+                    />
+                  </Link>
                   <div style={styles.itemDetails}>
-                    <h3 style={styles.itemName}>{item.product?.name || 'Ürün'}</h3>
+                    <Link to={`/products/${item.productId}`} style={styles.itemName}>
+                      {item.product?.name || 'Ürün Bilgisi'}
+                    </Link>
                     <p style={styles.itemMeta}>
-                      Birim Fiyat: {formatPrice(item.price)} • Adet: {item.quantity}
+                      Birim Fiyat: {formatPrice(item.price)} • Adet: <strong>{item.quantity}</strong>
                     </p>
                   </div>
                   <div style={styles.itemTotal}>
@@ -377,13 +399,24 @@ const styles: { [key: string]: React.CSSProperties } = {
     padding: '16px 20px',
     borderBottom: '1px solid #f1f5f9',
   },
-  itemImage: {
-    width: '64px',
-    height: '64px',
-    objectFit: 'cover',
-    borderRadius: '8px',
+  itemImageWrapper: {
+    width: '74px',
+    height: '74px',
+    borderRadius: '10px',
     backgroundColor: '#f8fafc',
     border: '1px solid #e2e8f0',
+    overflow: 'hidden',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
+    textDecoration: 'none',
+  },
+  itemImage: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    display: 'block',
   },
   itemDetails: {
     flex: 1,
@@ -393,7 +426,10 @@ const styles: { [key: string]: React.CSSProperties } = {
     fontSize: '15px',
     fontWeight: 600,
     color: '#0f172a',
-    margin: '0 0 6px 0',
+    textDecoration: 'none',
+    display: 'block',
+    margin: '0 0 4px 0',
+    lineHeight: 1.4,
   },
   itemMeta: {
     fontSize: '13px',

@@ -1,6 +1,5 @@
-// frontend/src/components/Navbar.tsx
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ShoppingBag, ShoppingCart, Search, User as UserIcon, LogOut, ShieldCheck, Package } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
@@ -9,12 +8,26 @@ export default function Navbar() {
   const { user, isAdmin, logout } = useAuth();
   const { cartCount } = useCart();
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchTerm, setSearchTerm] = useState('');
+
+  // URL'deki arama parametresini navbar kutusuyla senkronize et
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const q = params.get('search');
+    if (q !== null) {
+      setSearchTerm(q);
+    } else if (location.pathname !== '/products') {
+      setSearchTerm('');
+    }
+  }, [location.search, location.pathname]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchTerm.trim()) {
       navigate(`/products?search=${encodeURIComponent(searchTerm.trim())}`);
+    } else {
+      navigate('/products');
     }
   };
 
@@ -181,6 +194,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     width: '100%',
     padding: '10px 16px 10px 42px',
     fontSize: '14px',
+    color: '#0f172a',
     borderRadius: '9999px',
     border: '1px solid #e2e8f0',
     backgroundColor: '#f8fafc',
