@@ -603,15 +603,15 @@ Kullanıcıların ürünleri sepete ekleyip yönetebileceği tam bir cart sistem
 
 Sepetin siparişe dönüştürülmesi.
 
-- [ ] Order model
-- [ ] OrderItem model
-- [ ] Cart → Order dönüşümü
-- [ ] Order oluşturma
-- [ ] Order details
-- [ ] Order history
-- [ ] Kullanıcının kendi siparişlerini görüntülemesi
-- [ ] Admin'in tüm siparişleri görüntülemesi
-- [ ] Order status
+- [x] Order model
+- [x] OrderItem model
+- [x] Cart → Order dönüşümü
+- [x] Order oluşturma
+- [x] Order details
+- [x] Order history
+- [x] Kullanıcının kendi siparişlerini görüntülemesi
+- [x] Admin'in tüm siparişleri görüntülemesi
+- [x] Order status
 
 Sipariş durumları:
 

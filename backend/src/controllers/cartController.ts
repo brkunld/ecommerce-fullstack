@@ -1,8 +1,8 @@
-import { type Request, type Response, type NextFunction } from "express";
+import { type Response, type NextFunction } from "express";
 import { AppError } from "../utils/AppError.js";
 
 import * as cartService from "../services/cartService.js";
-import { AuthRequest } from "../middleware/authMiddleware.js";
+import { type AuthRequest } from "../middleware/authMiddleware.js";
 
 export const getCartController = async (
   req: AuthRequest,
