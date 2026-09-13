@@ -1,6 +1,7 @@
 // frontend/src/App.tsx
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { CartProvider } from './context/CartContext';
 
 // Ortak Bileşenler
 import Navbar from './components/Navbar';
@@ -22,50 +23,52 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-          <Navbar />
-          <main style={{ flex: 1 }}>
-            <Routes>
-              {/* Herkese Açık Rotalar */}
-              <Route path="/" element={<HomePage />} />
-              <Route path="/products" element={<ProductsPage />} />
-              <Route path="/products/:id" element={<ProductDetailPage />} />
-              <Route path="/cart" element={<CartPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
+        <CartProvider>
+          <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+            <Navbar />
+            <main style={{ flex: 1 }}>
+              <Routes>
+                {/* Herkese Açık Rotalar */}
+                <Route path="/" element={<HomePage />} />
+                <Route path="/products" element={<ProductsPage />} />
+                <Route path="/products/:id" element={<ProductDetailPage />} />
+                <Route path="/cart" element={<CartPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
 
-              {/* Korumalı Rotalar (Giriş Yapmış Kullanıcılar) */}
-              <Route
-                path="/checkout"
-                element={
-                  <ProtectedRoute>
-                    <CheckoutPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/orders"
-                element={
-                  <ProtectedRoute>
-                    <OrdersPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/orders/:id"
-                element={
-                  <ProtectedRoute>
-                    <OrderDetailPage />
-                  </ProtectedRoute>
-                }
-              />
+                {/* Korumalı Rotalar (Giriş Yapmış Kullanıcılar) */}
+                <Route
+                  path="/checkout"
+                  element={
+                    <ProtectedRoute>
+                      <CheckoutPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/orders"
+                  element={
+                    <ProtectedRoute>
+                      <OrdersPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/orders/:id"
+                  element={
+                    <ProtectedRoute>
+                      <OrderDetailPage />
+                    </ProtectedRoute>
+                  }
+                />
 
-              {/* 404 Sayfası */}
-              <Route path="*" element={<div style={{ padding: '2rem', textAlign: 'center' }}>404 - Sayfa Bulunamadı</div>} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
+                {/* 404 Sayfası */}
+                <Route path="*" element={<div style={{ padding: '2rem', textAlign: 'center' }}>404 - Sayfa Bulunamadı</div>} />
+              </Routes>
+            </main>
+            <Footer />
+          </div>
+        </CartProvider>
       </AuthProvider>
     </BrowserRouter>
   );

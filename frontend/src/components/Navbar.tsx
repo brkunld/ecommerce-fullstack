@@ -3,9 +3,11 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingBag, ShoppingCart, Search, User as UserIcon, LogOut, ShieldCheck, Package } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
 
 export default function Navbar() {
   const { user, isAdmin, logout } = useAuth();
+  const { cartCount } = useCart();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -52,7 +54,30 @@ export default function Navbar() {
 
           {/* Sepet Butonu */}
           <Link to="/cart" style={styles.cartButton}>
-            <ShoppingCart size={20} color="#334155" />
+            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+              <ShoppingCart size={20} color="#334155" />
+              {cartCount > 0 && (
+                <span
+                  style={{
+                    position: 'absolute',
+                    top: '-8px',
+                    right: '-10px',
+                    backgroundColor: '#ef4444',
+                    color: '#ffffff',
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    width: '18px',
+                    height: '18px',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {cartCount}
+                </span>
+              )}
+            </div>
             <span style={styles.cartText}>Sepetim</span>
           </Link>
 

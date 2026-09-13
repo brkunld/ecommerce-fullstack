@@ -697,16 +697,16 @@ Backend API tamamlandıktan sonra kullanıcı arayüzü geliştirilecektir.
 
 ### Customer Interface
 
-- [ ] Homepage
-- [ ] Product listing
-- [ ] Product details
-- [ ] Category pages
-- [ ] Search
-- [ ] Filtering
+- [x] Homepage
+- [x] Product listing
+- [x] Product details
+- [x] Category pages
+- [x] Search
+- [x] Filtering
 - [x] Login
 - [x] Register
 - [ ] User profile
-- [ ] Shopping cart
+- [x] Shopping cart
 - [ ] Checkout
 - [ ] Order history
 - [ ] Order details
