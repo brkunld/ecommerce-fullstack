@@ -31,9 +31,15 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
     try {
       setLoading(true);
-      // TODO 1: api.get('/cart') çağır ve gelen sepeti setCart(...) içine aktar (res.data.data.cart)
       const res = await api.get('/cart');
-      setCart(res.data.data.cart);
+      const responseData = res.data.data?.cart;
+
+      // Backend getCart: { cart: Cart, totalPrice: number, itemCount: number } dönüyor
+      if (responseData && responseData.cart) {
+        setCart(responseData.cart);
+      } else {
+        setCart(responseData || null);
+      }
     } catch (err) {
       console.error('Sepet getirilemedi:', err);
     } finally {

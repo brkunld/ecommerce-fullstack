@@ -705,11 +705,11 @@ Backend API tamamlandıktan sonra kullanıcı arayüzü geliştirilecektir.
 - [x] Filtering
 - [x] Login
 - [x] Register
-- [ ] User profile
+- [x] User profile
 - [x] Shopping cart
-- [ ] Checkout
-- [ ] Order history
-- [ ] Order details
+- [x] Checkout
+- [x] Order history
+- [x] Order details
 
 ### API Integration
 

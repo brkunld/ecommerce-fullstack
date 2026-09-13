@@ -92,17 +92,17 @@ export default function Navbar() {
 
               {/* Admin Paneli Butonu (Yalnızca ADMIN kullanıcılar için) */}
               {isAdmin && (
-                <span style={styles.adminBadge} title="Yönetici Hesabı">
+                <Link to="/admin" style={styles.adminBadge} title="Yönetici Paneli">
                   <ShieldCheck size={16} color="#059669" />
                   <span>Admin</span>
-                </span>
+                </Link>
               )}
 
-              {/* Kullanıcı Adı */}
-              <div style={styles.userNameBadge}>
+              {/* Kullanıcı Adı / Profil Linki */}
+              <Link to="/profile" style={styles.userNameBadge} title="Profilimi Görüntüle">
                 <UserIcon size={16} color="#2563eb" />
                 <span style={styles.userName}>{user.name}</span>
-              </div>
+              </Link>
 
               {/* Çıkış Yap Butonu */}
               <button onClick={handleLogout} style={styles.logoutButton} title="Çıkış Yap">
@@ -245,6 +245,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     backgroundColor: '#d1fae5',
     padding: '4px 8px',
     borderRadius: '6px',
+    textDecoration: 'none',
   },
   userNameBadge: {
     display: 'flex',
@@ -253,6 +254,9 @@ const styles: { [key: string]: React.CSSProperties } = {
     padding: '6px 10px',
     backgroundColor: '#eff6ff',
     borderRadius: '6px',
+    textDecoration: 'none',
+    cursor: 'pointer',
+    transition: 'background-color 0.2s',
   },
   userName: {
     fontSize: '13px',

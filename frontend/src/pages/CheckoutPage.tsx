@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Loader2, ShieldCheck } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-
+import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 
 export default function CheckoutPage() {
   const { cart, cartTotal, clearCart, loading } = useCart();
-  const [shippingAddress, setShippingAddress] = useState('');
-  const [contactPhone, setContactPhone] = useState('');
+  const { user } = useAuth();
+  const [shippingAddress, setShippingAddress] = useState(user?.address || '');
+  const [contactPhone, setContactPhone] = useState(user?.phone || '');
   const [note, setNote] = useState('');
+  const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
 
   // Fiyatları biçimlendirmek için yardımcı
@@ -18,23 +20,29 @@ export default function CheckoutPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (submitting) return;
+
     try {
-      await api.post('/orders', {
+      setSubmitting(true);
+      const res = await api.post('/orders', {
         shippingAddress,
         contactPhone,
         note,
-        items: cart?.items?.map((item) => ({
-          productId: item.productId,
-          quantity: item.quantity,
-        })),
       });
-      // Başarılıysa sepeti temizle ve anasayfaya yönlendir
-      clearCart();
-      navigate('/');
+
+      // Başarılıysa sepeti temizle ve oluşan siparişin detayına yönlendir
+      await clearCart();
+      const createdOrder = res.data.data?.order;
+      if (createdOrder?.id) {
+        navigate(`/orders/${createdOrder.id}`);
+      } else {
+        navigate('/orders');
+      }
     } catch (err) {
       console.error('Sipariş gönderme hatası:', err);
-      // Hata durumunda kullanıcıyı bilgilendirebilirsiniz
-      alert('Sipariş gönderilirken bir hata oluştu. Lütfen tekrar deneyin.');
+      alert('Sipariş gönderilirken bir hata oluştu. Lütfen bilgilerinizi kontrol edip tekrar deneyin.');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -97,8 +105,16 @@ export default function CheckoutPage() {
             placeholder="Siparişle ilgili not ekleyebilirsiniz..."
           />
 
-          <button type="submit" style={styles.submitBtn}>
-            <span>Siparişi Tamamla</span>
+          <button
+            type="submit"
+            disabled={submitting}
+            style={{
+              ...styles.submitBtn,
+              opacity: submitting ? 0.7 : 1,
+              cursor: submitting ? 'not-allowed' : 'pointer',
+            }}
+          >
+            <span>{submitting ? 'Sipariş Oluşturuluyor...' : 'Siparişi Tamamla'}</span>
             <ArrowRight size={18} />
           </button>
         </form>

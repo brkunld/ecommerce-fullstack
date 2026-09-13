@@ -1,14 +1,17 @@
 // frontend/src/pages/ProductDetailPage.tsx
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ShoppingCart, ArrowLeft, ShieldCheck, Truck, RotateCcw, Loader2, PackageOpen } from 'lucide-react';
 import api from '../services/api';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import type { Product } from '../types';
 
 export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { addToCart } = useCart();
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedImage, setSelectedImage] = useState<string>('');
@@ -19,12 +22,19 @@ export default function ProductDetailPage() {
 
   const handleAddToCart = async () => {
     if (!product) return;
+
+    if (!user) {
+      alert('Sepete ürün eklemek için lütfen giriş yapınız.');
+      navigate('/login');
+      return;
+    }
+
     try {
       setAddingToCart(true);
       await addToCart(product.id, quantity);
       alert(`${quantity} adet "${product.name}" sepete eklendi! 🛒`);
     } catch {
-      alert('Sepete eklenirken bir hata oluştu. Lütfen giriş yaptığınızdan emin olun.');
+      alert('Sepete eklenirken bir hata oluştu.');
     } finally {
       setAddingToCart(false);
     }

@@ -1,7 +1,9 @@
 // frontend/src/components/ProductCard.tsx
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { ShoppingCart, Eye } from 'lucide-react';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ShoppingCart, Eye, Check, Loader2 } from 'lucide-react';
+import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import type { Product } from '../types';
 
 interface ProductCardProps {
@@ -10,6 +12,13 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, onAddToCart }: ProductCardProps) {
+  const { addToCart } = useCart();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const [adding, setAdding] = useState(false);
+  const [added, setAdded] = useState(false);
+
   // Görseli güvenli şekilde al (JSON parse veya direkt dizi kontrolü)
   let imageUrl = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80';
   try {
@@ -32,6 +41,34 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
   }).format(Number(product.price));
 
   const isOutOfStock = product.stock <= 0;
+
+  const handleCartClick = async () => {
+    if (isOutOfStock || adding) return;
+
+    if (onAddToCart) {
+      onAddToCart(product);
+      return;
+    }
+
+    // Kullanıcı giriş yapmamışsa login sayfasına yönlendir
+    if (!user) {
+      alert('Sepete ürün eklemek için lütfen giriş yapınız.');
+      navigate('/login');
+      return;
+    }
+
+    try {
+      setAdding(true);
+      await addToCart(product.id, 1);
+      setAdded(true);
+      setTimeout(() => setAdded(false), 1500);
+    } catch (err) {
+      console.error('Sepete eklenirken hata:', err);
+      alert('Ürün sepete eklenirken bir hata oluştu.');
+    } finally {
+      setAdding(false);
+    }
+  };
 
   return (
     <div style={styles.card}>
@@ -73,16 +110,24 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
               <Eye size={18} color="#475569" />
             </Link>
             <button
-              onClick={() => onAddToCart && onAddToCart(product)}
-              disabled={isOutOfStock}
+              onClick={handleCartClick}
+              disabled={isOutOfStock || adding}
               style={{
                 ...styles.cartButton,
+                backgroundColor: added ? '#16a34a' : '#2563eb',
                 opacity: isOutOfStock ? 0.5 : 1,
-                cursor: isOutOfStock ? 'not-allowed' : 'pointer',
+                cursor: isOutOfStock || adding ? 'not-allowed' : 'pointer',
+                transition: 'all 0.2s ease',
               }}
-              title={isOutOfStock ? 'Stokta Yok' : 'Sepete Ekle'}
+              title={isOutOfStock ? 'Stokta Yok' : added ? 'Sepete Eklendi!' : 'Sepete Ekle'}
             >
-              <ShoppingCart size={18} color="#ffffff" />
+              {adding ? (
+                <Loader2 size={18} color="#ffffff" style={{ animation: 'spin 1s linear infinite' }} />
+              ) : added ? (
+                <Check size={18} color="#ffffff" />
+              ) : (
+                <ShoppingCart size={18} color="#ffffff" />
+              )}
             </button>
           </div>
         </div>
