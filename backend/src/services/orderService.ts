@@ -26,45 +26,58 @@ export const createOrder = async (
   }
   // 3. Benzersiz sipariş numarası üret (Örn: ORD-1726245600000-842)
   const orderNumber = `ORD-${Date.now()}-${Math.floor(100 + Math.random() * 900)}`;
-  // 4. Siparişi ve sipariş kalemlerini (OrderItem) veritabanına kaydet
-  const order = await prisma.order.create({
-    data: {
-      userId,
-      orderNumber,
-      totalAmount: cartData.totalPrice,
-      shippingAddress: orderData.shippingAddress,
-      contactPhone: orderData.contactPhone,
-      note: orderData.note,
-      items: {
-        create: cartData.cart.items.map((item) => ({
-          productId: item.productId,
-          price: item.product.price,
-          quantity: item.quantity,
-        })),
-      },
-    },
-    include: {
-      items: {
-        include: {
-          product: true,
+
+  return await prisma.$transaction(async (tx) => {
+    // 4. Siparişi ve sipariş kalemlerini (OrderItem) veritabanına kaydet)
+    const order = await tx.order.create({
+      data: {
+        userId,
+        orderNumber,
+        totalAmount: cartData.totalPrice,
+        shippingAddress: orderData.shippingAddress,
+        contactPhone: orderData.contactPhone,
+        note: orderData.note,
+        items: {
+          create: cartData.cart.items.map((item) => ({
+            productId: item.productId,
+            price: item.product.price,
+            quantity: item.quantity,
+          })),
         },
       },
-    },
-  });
-  // 5. Satın alınan ürünlerin stoklarını düşür
-  for (const item of cartData.cart.items) {
-    await prisma.product.update({
-      where: { id: item.productId },
-      data: {
-        stock: {
-          decrement: item.quantity,
+      include: {
+        items: {
+          include: {
+            product: true,
+          },
         },
       },
     });
-  }
-  // 6. Sepeti temizle
-  await clearCart(userId);
-  return order;
+
+    // 5. Satın alınan ürünlerin stoklarını düşür
+    for (const item of cartData.cart.items) {
+      const currentProduct = await tx.product.findUnique({
+        where: { id: item.productId },
+      });
+      if (!currentProduct || currentProduct.stock < item.quantity) {
+        throw new AppError("Yetersiz stok", 400);
+      }
+      await tx.product.update({
+        where: { id: item.productId },
+        data: {
+          stock: {
+            decrement: item.quantity,
+          },
+        },
+      });
+    }
+    // 6. Sepeti temizle
+    await tx.cartItem.deleteMany({
+      where: { cartId: cartData.cart.id },
+    });
+
+    return order;
+  });
 };
 
 export const getUserOrders = async (userId: string) => {
@@ -131,10 +144,7 @@ export const getOrderById = async (
   return order;
 };
 
-export const updateOrderStatus = async (
-  orderId: string,
-  status: any,
-) => {
+export const updateOrderStatus = async (orderId: string, status: any) => {
   const order = await prisma.order.findUnique({ where: { id: orderId } });
   if (!order) {
     throw new AppError("Sipariş bulunamadı", 404);

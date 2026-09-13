@@ -642,12 +642,12 @@ Sepet → Sipariş akışını oluşturmak ve sipariş yaşam döngüsünü yön
 
 Sipariş ve stok işlemlerinin güvenli şekilde gerçekleştirilmesi.
 
-- [ ] Database transaction
-- [ ] Stock validation
-- [ ] Stock decrease
-- [ ] Transaction rollback
-- [ ] Race condition problemlerinin incelenmesi
-- [ ] Concurrent order senaryolarının yönetilmesi
+- [x] Database transaction
+- [x] Stock validation
+- [x] Stock decrease
+- [x] Transaction rollback
+- [x] Race condition problemlerinin incelenmesi
+- [x] Concurrent order senaryolarının yönetilmesi
 
 Sipariş oluşturma akışı:
 
