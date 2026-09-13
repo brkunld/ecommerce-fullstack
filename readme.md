@@ -687,10 +687,10 @@ Backend API tamamlandıktan sonra kullanıcı arayüzü geliştirilecektir.
 
 ### Frontend Setup
 
-- [ ] React kurulumu
-- [ ] TypeScript kurulumu
-- [ ] React Router
-- [ ] Axios
+- [x] React kurulumu
+- [x] TypeScript kurulumu
+- [x] React Router
+- [x] Axios
 - [ ] API client
 - [ ] Environment configuration
 - [ ] Component structure
