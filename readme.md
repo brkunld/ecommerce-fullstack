@@ -691,9 +691,9 @@ Backend API tamamlandıktan sonra kullanıcı arayüzü geliştirilecektir.
 - [x] TypeScript kurulumu
 - [x] React Router
 - [x] Axios
-- [ ] API client
-- [ ] Environment configuration
-- [ ] Component structure
+- [x] API client
+- [x] Environment configuration
+- [x] Component structure
 
 ### Customer Interface
 
@@ -703,8 +703,8 @@ Backend API tamamlandıktan sonra kullanıcı arayüzü geliştirilecektir.
 - [ ] Category pages
 - [ ] Search
 - [ ] Filtering
-- [ ] Login
-- [ ] Register
+- [x] Login
+- [x] Register
 - [ ] User profile
 - [ ] Shopping cart
 - [ ] Checkout

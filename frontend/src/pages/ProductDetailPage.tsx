@@ -1,0 +1,1 @@
+export default function ProductDetailPage() { return <div>Ürün Detayı</div>; }
