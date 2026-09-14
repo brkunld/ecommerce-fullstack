@@ -746,11 +746,11 @@ Admin kullanıcılar için ayrı bir yönetim paneli oluşturulacaktır.
 
 ### Product Management
 
-- [ ] Product list
-- [ ] Create product
-- [ ] Edit product
-- [ ] Delete product
-- [ ] Stock management
+- [x] Product list
+- [x] Create product
+- [x] Edit product
+- [x] Delete product
+- [x] Stock management
 
 ### Category Management
 
