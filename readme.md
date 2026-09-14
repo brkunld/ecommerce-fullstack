@@ -761,9 +761,10 @@ Admin kullanıcılar için ayrı bir yönetim paneli oluşturulacaktır.
 
 ### Order Management
 
-- [ ] All orders
-- [ ] Order details
-- [ ] Update order status
+- [x] Order list
+- [x] Order details
+- [x] Status update
+- [x] Filter by status
 
 ### User Management
 
