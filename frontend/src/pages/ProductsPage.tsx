@@ -119,29 +119,30 @@ export default function ProductsPage() {
   };
 
   return (
-    <div style={styles.container}>
+    <div className="page-container products-page-container">
       {/* Sayfa Başlığı ve Açıklama */}
-      <div style={styles.header}>
-        <h1 style={styles.pageTitle}>Ürün Kataloğu</h1>
-        <p style={styles.pageSubtitle}>
+      <div className="products-header">
+        <h1 className="products-title">Ürün Kataloğu</h1>
+        <p className="products-subtitle">
           Tüm kategorilerdeki en yeni ve kaliteli ürünleri keşfedin
         </p>
       </div>
 
       {/* Kontrol Barı (Arama ve Sıralama) */}
-      <div style={styles.controlsBar}>
-        <form onSubmit={handleSearchSubmit} style={styles.searchBox}>
+      <div className="products-controls-bar">
+        <form onSubmit={handleSearchSubmit} className="products-search-box">
           <Search size={18} color="#94a3b8" style={styles.searchIcon} />
           <input
             type="text"
             placeholder="Ürün adı veya açıklama ile ara..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            className="products-search-input"
             style={styles.searchInput}
           />
         </form>
 
-        <div style={styles.sortBox}>
+        <div className="products-sort-box">
           <label style={styles.sortLabel}>Sırala:</label>
           <select
             value={sortOption}
@@ -149,6 +150,7 @@ export default function ProductsPage() {
               setSortOption(e.target.value);
               setPage(1);
             }}
+            className="products-sort-select"
             style={styles.select}
           >
             <option value="newest">En Yeniler</option>
@@ -159,19 +161,19 @@ export default function ProductsPage() {
       </div>
 
       {/* Ana İçerik: Sol Sidebar (Kategoriler) + Sağ Ürün Grid'i */}
-      <div style={styles.mainLayout}>
+      <div className="products-main-layout">
         {/* Sol Filtre Sidebar */}
-        <aside style={styles.sidebar}>
-          <div style={styles.sidebarHeader}>
+        <aside className="products-sidebar">
+          <div className="products-sidebar-header">
             <Filter size={18} color="#2563eb" />
             <h3 style={styles.sidebarTitle}>Kategoriler</h3>
           </div>
 
-          <div style={styles.categoryList}>
+          <div className="products-category-list">
             <button
               onClick={() => handleCategorySelect("")}
+              className={`products-category-btn ${selectedCategory === "" ? "active" : ""}`}
               style={{
-                ...styles.categoryBtn,
                 backgroundColor:
                   selectedCategory === "" ? "#eff6ff" : "transparent",
                 color: selectedCategory === "" ? "#2563eb" : "#475569",
@@ -185,8 +187,8 @@ export default function ProductsPage() {
               <button
                 key={cat.id}
                 onClick={() => handleCategorySelect(cat.id)}
+                className={`products-category-btn ${selectedCategory === cat.id ? "active" : ""}`}
                 style={{
-                  ...styles.categoryBtn,
                   backgroundColor:
                     selectedCategory === cat.id ? "#eff6ff" : "transparent",
                   color: selectedCategory === cat.id ? "#2563eb" : "#475569",
@@ -200,7 +202,7 @@ export default function ProductsPage() {
         </aside>
 
         {/* Sağ: Ürünler Listesi */}
-        <div style={styles.productsArea}>
+        <div className="products-area">
           {loading ? (
             <div style={styles.centerBox}>
               <Loader2
@@ -225,7 +227,7 @@ export default function ProductsPage() {
             </div>
           ) : (
             <>
-              <div style={styles.productsGrid}>
+              <div className="products-grid">
                 {products.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
@@ -233,10 +235,11 @@ export default function ProductsPage() {
 
               {/* Sayfalama (Pagination) */}
               {totalPages > 1 && (
-                <div style={styles.pagination}>
+                <div className="products-pagination">
                   <button
                     disabled={page <= 1}
                     onClick={() => setPage((p) => p - 1)}
+                    className="products-page-btn"
                     style={{
                       ...styles.pageBtn,
                       opacity: page <= 1 ? 0.5 : 1,
@@ -254,6 +257,7 @@ export default function ProductsPage() {
                   <button
                     disabled={page >= totalPages}
                     onClick={() => setPage((p) => p + 1)}
+                    className="products-page-btn"
                     style={{
                       ...styles.pageBtn,
                       opacity: page >= totalPages ? 0.5 : 1,

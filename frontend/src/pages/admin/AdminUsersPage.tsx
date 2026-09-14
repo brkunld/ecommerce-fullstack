@@ -179,7 +179,7 @@ export default function AdminUsersPage() {
         </div>
 
         {/* Rol Filtre Sekmeleri */}
-        <div style={styles.roleTabs}>
+        <div className="admin-users-role-tabs" style={styles.roleTabs}>
           {[
             { key: 'ALL', label: 'Tüm Kullanıcılar', count: users.length },
             { key: 'ADMIN', label: 'Yöneticiler (Admin)', count: adminCount },
@@ -213,8 +213,8 @@ export default function AdminUsersPage() {
         </div>
 
         {/* Arama Çubuğu */}
-        <div style={styles.filterBar}>
-          <div style={styles.searchBox}>
+        <div className="admin-users-filter-bar" style={styles.filterBar}>
+          <div className="admin-users-search-box" style={styles.searchBox}>
             <Search size={18} color="#94a3b8" />
             <input
               type="text"
@@ -260,120 +260,227 @@ export default function AdminUsersPage() {
               </p>
             </div>
           ) : (
-            <div style={{ overflowX: 'auto' }}>
-              <table style={styles.table}>
-                <thead>
-                  <tr>
-                    <th style={styles.th}>Kullanıcı Adı</th>
-                    <th style={styles.th}>E-posta</th>
-                    <th style={styles.th}>Kayıt Tarihi</th>
-                    <th style={styles.th}>Siparişler</th>
-                    <th style={styles.th}>Rol</th>
-                    <th style={{ ...styles.th, textAlign: 'right' }}>İşlemler</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredUsers.map((u) => {
-                    const isAdmin = u.role === 'ADMIN';
-                    const isCurrent = currentUser?.id === u.id;
+            <>
+              {/* MASAÜSTÜ TABLO GÖRÜNÜMÜ */}
+              <div className="admin-users-desktop-table" style={{ overflowX: 'auto' }}>
+                <table style={styles.table}>
+                  <thead>
+                    <tr>
+                      <th style={styles.th}>Kullanıcı Adı</th>
+                      <th style={styles.th}>E-posta</th>
+                      <th style={styles.th}>Kayıt Tarihi</th>
+                      <th style={styles.th}>Siparişler</th>
+                      <th style={styles.th}>Rol</th>
+                      <th style={{ ...styles.th, textAlign: 'right' }}>İşlemler</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredUsers.map((u) => {
+                      const isAdmin = u.role === 'ADMIN';
+                      const isCurrent = currentUser?.id === u.id;
 
-                    return (
-                      <tr key={u.id} style={styles.tr}>
-                        <td style={styles.td}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                            <div
-                              style={{
-                                ...styles.avatar,
-                                backgroundColor: isAdmin ? '#eff6ff' : '#f8fafc',
-                                color: isAdmin ? '#2563eb' : '#475569',
-                              }}
-                            >
-                              {u.name.charAt(0).toUpperCase()}
-                            </div>
-                            <div>
-                              <div style={{ fontWeight: 700, color: '#0f172a' }}>
-                                {u.name}
-                                {isCurrent && (
-                                  <span style={styles.selfBadge}>Siz</span>
+                      return (
+                        <tr key={u.id} style={styles.tr}>
+                          <td style={styles.td}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                              <div
+                                style={{
+                                  ...styles.avatar,
+                                  backgroundColor: isAdmin ? '#eff6ff' : '#f8fafc',
+                                  color: isAdmin ? '#2563eb' : '#475569',
+                                }}
+                              >
+                                {u.name.charAt(0).toUpperCase()}
+                              </div>
+                              <div>
+                                <div style={{ fontWeight: 700, color: '#0f172a' }}>
+                                  {u.name}
+                                  {isCurrent && (
+                                    <span style={styles.selfBadge}>Siz</span>
+                                  )}
+                                </div>
+                                {u.phone && (
+                                  <div style={{ fontSize: '12px', color: '#64748b' }}>{u.phone}</div>
                                 )}
                               </div>
-                              {u.phone && (
-                                <div style={{ fontSize: '12px', color: '#64748b' }}>{u.phone}</div>
-                              )}
                             </div>
-                          </div>
-                        </td>
-                        <td style={styles.td}>
-                          <span style={{ color: '#334155', fontSize: '13px' }}>{u.email}</span>
-                        </td>
-                        <td style={styles.td}>
-                          <span style={{ color: '#64748b', fontSize: '13px' }}>
-                            {formatDate(u.createdAt)}
-                          </span>
-                        </td>
-                        <td style={styles.td}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                            <ShoppingBag size={14} color="#64748b" />
-                            <span style={styles.orderBadge}>
-                              {u._count?.orders ?? 0} sipariş
+                          </td>
+                          <td style={styles.td}>
+                            <span style={{ color: '#334155', fontSize: '13px' }}>{u.email}</span>
+                          </td>
+                          <td style={styles.td}>
+                            <span style={{ color: '#64748b', fontSize: '13px' }}>
+                              {formatDate(u.createdAt)}
                             </span>
-                          </div>
-                        </td>
-                        <td style={styles.td}>
-                          <span
+                          </td>
+                          <td style={styles.td}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                              <ShoppingBag size={14} color="#64748b" />
+                              <span style={styles.orderBadge}>
+                                {u._count?.orders ?? 0} sipariş
+                              </span>
+                            </div>
+                          </td>
+                          <td style={styles.td}>
+                            <span
+                              style={{
+                                ...styles.roleBadge,
+                                backgroundColor: isAdmin ? '#f5f3ff' : '#f1f5f9',
+                                color: isAdmin ? '#7c3aed' : '#475569',
+                                borderColor: isAdmin ? '#ddd6fe' : '#e2e8f0',
+                              }}
+                            >
+                              {isAdmin ? <ShieldCheck size={13} /> : <Shield size={13} />}
+                              <span>{isAdmin ? 'Admin' : 'Müşteri'}</span>
+                            </span>
+                          </td>
+                          <td style={{ ...styles.td, textAlign: 'right' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '8px' }}>
+                              {/* Rol Değiştir Butonu */}
+                              <button
+                                onClick={() => handleRoleChange(u.id, u.role)}
+                                disabled={updatingRoleId === u.id || (isCurrent && isAdmin)}
+                                style={{
+                                  ...styles.actionBtn,
+                                  opacity: isCurrent && isAdmin ? 0.4 : 1,
+                                  cursor: isCurrent && isAdmin ? 'not-allowed' : 'pointer',
+                                }}
+                                title={
+                                  isCurrent && isAdmin
+                                    ? 'Kendi admin yetkinizi kaldıramazsınız'
+                                    : isAdmin
+                                    ? 'Müşteri Yap'
+                                    : 'Admin Yetkisi Ver'
+                                }
+                              >
+                                {updatingRoleId === u.id ? (
+                                  <Loader2 size={14} style={{ animation: 'spin 1s linear infinite' }} />
+                                ) : (
+                                  <span>{isAdmin ? 'Yetkiyi Kaldır' : 'Admin Yap'}</span>
+                                )}
+                              </button>
+
+                              {/* Detay Butonu */}
+                              <button
+                                onClick={() => handleOpenDetail(u.id)}
+                                style={styles.iconBtn}
+                                title="Kullanıcı Detayları ve Siparişleri"
+                              >
+                                <Eye size={16} color="#2563eb" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* MOBİL KART LİSTESİ (Sağa sola kaydırma gerektirmez) */}
+              <div className="admin-users-mobile-list">
+                {filteredUsers.map((u) => {
+                  const isAdmin = u.role === 'ADMIN';
+                  const isCurrent = currentUser?.id === u.id;
+
+                  return (
+                    <div key={u.id} className="admin-user-mobile-card">
+                      {/* Kart Üst: Avatar + İsim + Rol + Detay İkonu */}
+                      <div className="admin-user-card-header">
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                          <div
                             style={{
-                              ...styles.roleBadge,
-                              backgroundColor: isAdmin ? '#f5f3ff' : '#f1f5f9',
-                              color: isAdmin ? '#7c3aed' : '#475569',
-                              borderColor: isAdmin ? '#ddd6fe' : '#e2e8f0',
+                              ...styles.avatar,
+                              backgroundColor: isAdmin ? '#eff6ff' : '#f8fafc',
+                              color: isAdmin ? '#2563eb' : '#475569',
                             }}
                           >
-                            {isAdmin ? <ShieldCheck size={13} /> : <Shield size={13} />}
-                            <span>{isAdmin ? 'Admin' : 'Müşteri'}</span>
-                          </span>
-                        </td>
-                        <td style={{ ...styles.td, textAlign: 'right' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '8px' }}>
-                            {/* Rol Değiştir Butonu */}
-                            <button
-                              onClick={() => handleRoleChange(u.id, u.role)}
-                              disabled={updatingRoleId === u.id || (isCurrent && isAdmin)}
-                              style={{
-                                ...styles.actionBtn,
-                                opacity: isCurrent && isAdmin ? 0.4 : 1,
-                                cursor: isCurrent && isAdmin ? 'not-allowed' : 'pointer',
-                              }}
-                              title={
-                                isCurrent && isAdmin
-                                  ? 'Kendi admin yetkinizi kaldıramazsınız'
-                                  : isAdmin
-                                  ? 'Müşteri Yap'
-                                  : 'Admin Yetkisi Ver'
-                              }
-                            >
-                              {updatingRoleId === u.id ? (
-                                <Loader2 size={14} style={{ animation: 'spin 1s linear infinite' }} />
-                              ) : (
-                                <span>{isAdmin ? 'Yetkiyi Kaldır' : 'Admin Yap'}</span>
-                              )}
-                            </button>
-
-                            {/* Detay Butonu */}
-                            <button
-                              onClick={() => handleOpenDetail(u.id)}
-                              style={styles.iconBtn}
-                              title="Kullanıcı Detayları ve Siparişleri"
-                            >
-                              <Eye size={16} color="#2563eb" />
-                            </button>
+                            {u.name.charAt(0).toUpperCase()}
                           </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+                          <div>
+                            <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '15px' }}>
+                              {u.name}
+                              {isCurrent && <span style={styles.selfBadge}>Siz</span>}
+                            </div>
+                            <span
+                              style={{
+                                ...styles.roleBadge,
+                                backgroundColor: isAdmin ? '#f5f3ff' : '#f1f5f9',
+                                color: isAdmin ? '#7c3aed' : '#475569',
+                                borderColor: isAdmin ? '#ddd6fe' : '#e2e8f0',
+                                marginTop: '4px',
+                              }}
+                            >
+                              {isAdmin ? <ShieldCheck size={12} /> : <Shield size={12} />}
+                              <span>{isAdmin ? 'Admin' : 'Müşteri'}</span>
+                            </span>
+                          </div>
+                        </div>
+
+                        <button
+                          onClick={() => handleOpenDetail(u.id)}
+                          className="admin-card-icon-btn"
+                          title="Detaylar"
+                        >
+                          <Eye size={18} color="#2563eb" />
+                        </button>
+                      </div>
+
+                      {/* Kart Orta: İletişim ve Detaylar */}
+                      <div className="admin-user-card-body">
+                        <div className="admin-user-card-row">
+                          <Mail size={14} color="#64748b" />
+                          <span className="admin-user-card-email">{u.email}</span>
+                        </div>
+                        {u.phone && (
+                          <div className="admin-user-card-row">
+                            <Phone size={14} color="#64748b" />
+                            <span>{u.phone}</span>
+                          </div>
+                        )}
+                        <div className="admin-user-card-meta-row">
+                          <div className="admin-user-card-row">
+                            <Calendar size={14} color="#64748b" />
+                            <span>Kayıt: {formatDate(u.createdAt)}</span>
+                          </div>
+                          <div className="admin-user-card-row">
+                            <ShoppingBag size={14} color="#64748b" />
+                            <span style={styles.orderBadge}>{u._count?.orders ?? 0} sipariş</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Kart Alt: İşlem Butonları */}
+                      <div className="admin-user-card-actions">
+                        <button
+                          onClick={() => handleOpenDetail(u.id)}
+                          className="admin-user-view-btn"
+                        >
+                          <Eye size={15} />
+                          <span>Profili & Siparişleri Gör</span>
+                        </button>
+
+                        <button
+                          onClick={() => handleRoleChange(u.id, u.role)}
+                          disabled={updatingRoleId === u.id || (isCurrent && isAdmin)}
+                          className={`admin-user-role-btn ${isAdmin ? 'demote' : 'promote'}`}
+                          style={{
+                            opacity: isCurrent && isAdmin ? 0.4 : 1,
+                            cursor: isCurrent && isAdmin ? 'not-allowed' : 'pointer',
+                          }}
+                        >
+                          {updatingRoleId === u.id ? (
+                            <Loader2 size={14} style={{ animation: 'spin 1s linear infinite' }} />
+                          ) : (
+                            <span>{isAdmin ? 'Yetkiyi Kaldır' : 'Admin Yetkisi Ver'}</span>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
           )}
         </div>
       </div>
@@ -448,48 +555,78 @@ export default function AdminUsersPage() {
                   </h4>
 
                   {detailUser.orders && detailUser.orders.length > 0 ? (
-                    <div style={{ border: '1px solid #e2e8f0', borderRadius: '12px', overflow: 'hidden' }}>
-                      <table style={styles.table}>
-                        <thead>
-                          <tr>
-                            <th style={styles.th}>Sipariş No</th>
-                            <th style={styles.th}>Tarih</th>
-                            <th style={styles.th}>Tutar</th>
-                            <th style={styles.th}>Durum</th>
-                            <th style={{ ...styles.th, textAlign: 'right' }}>İncele</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {detailUser.orders.map((o) => (
-                            <tr key={o.id} style={styles.tr}>
-                              <td style={styles.td}>
-                                <span style={{ fontWeight: 700, fontFamily: 'monospace', color: '#0f172a' }}>
-                                  {o.orderNumber}
-                                </span>
-                              </td>
-                              <td style={styles.td}>{formatDate(o.createdAt)}</td>
-                              <td style={{ ...styles.td, fontWeight: 700, color: '#0f172a' }}>
-                                {formatPrice(o.totalAmount)}
-                              </td>
-                              <td style={styles.td}>
-                                <span style={styles.orderStatusPill}>{o.status}</span>
-                              </td>
-                              <td style={{ ...styles.td, textAlign: 'right' }}>
-                                <Link
-                                  to={`/orders/${o.id}`}
-                                  style={styles.orderLinkBtn}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                >
-                                  <span>Görüntüle</span>
-                                  <ExternalLink size={12} />
-                                </Link>
-                              </td>
+                    <>
+                      {/* Masaüstü Sipariş Tablosu */}
+                      <div className="admin-modal-table-desktop" style={{ border: '1px solid #e2e8f0', borderRadius: '12px', overflow: 'hidden' }}>
+                        <table style={styles.table}>
+                          <thead>
+                            <tr>
+                              <th style={styles.th}>Sipariş No</th>
+                              <th style={styles.th}>Tarih</th>
+                              <th style={styles.th}>Tutar</th>
+                              <th style={styles.th}>Durum</th>
+                              <th style={{ ...styles.th, textAlign: 'right' }}>İncele</th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
+                          </thead>
+                          <tbody>
+                            {detailUser.orders.map((o) => (
+                              <tr key={o.id} style={styles.tr}>
+                                <td style={styles.td}>
+                                  <span style={{ fontWeight: 700, fontFamily: 'monospace', color: '#0f172a' }}>
+                                    {o.orderNumber}
+                                  </span>
+                                </td>
+                                <td style={styles.td}>{formatDate(o.createdAt)}</td>
+                                <td style={{ ...styles.td, fontWeight: 700, color: '#0f172a' }}>
+                                  {formatPrice(o.totalAmount)}
+                                </td>
+                                <td style={styles.td}>
+                                  <span style={styles.orderStatusPill}>{o.status}</span>
+                                </td>
+                                <td style={{ ...styles.td, textAlign: 'right' }}>
+                                  <Link
+                                    to={`/orders/${o.id}`}
+                                    style={styles.orderLinkBtn}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                  >
+                                    <span>Görüntüle</span>
+                                    <ExternalLink size={12} />
+                                  </Link>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+
+                      {/* Mobil Sipariş Kartları (Kaydırma gerektirmez) */}
+                      <div className="admin-modal-orders-mobile">
+                        {detailUser.orders.map((o) => (
+                          <div key={o.id} className="admin-modal-order-card">
+                            <div className="admin-modal-order-card-header">
+                              <span style={{ fontWeight: 700, fontFamily: 'monospace', color: '#0f172a' }}>
+                                #{o.orderNumber}
+                              </span>
+                              <span style={styles.orderStatusPill}>{o.status}</span>
+                            </div>
+                            <div className="admin-modal-order-card-body">
+                              <span style={{ fontSize: '13px', color: '#64748b' }}>{formatDate(o.createdAt)}</span>
+                              <span style={{ fontWeight: 700, color: '#0f172a', fontSize: '15px' }}>{formatPrice(o.totalAmount)}</span>
+                            </div>
+                            <Link
+                              to={`/orders/${o.id}`}
+                              className="admin-modal-order-link"
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              <span>Siparişi Görüntüle</span>
+                              <ExternalLink size={14} />
+                            </Link>
+                          </div>
+                        ))}
+                      </div>
+                    </>
                   ) : (
                     <div style={styles.emptyOrdersBox}>
                       <p style={{ margin: 0, color: '#64748b', fontSize: '13px' }}>

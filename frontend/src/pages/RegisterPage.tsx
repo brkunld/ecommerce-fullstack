@@ -43,7 +43,7 @@ export default function RegisterPage() {
 
   return (
     <div style={styles.container}>
-      <div style={styles.card}>
+      <div className="auth-card" style={styles.card}>
         {/* Başlık ve İkon */}
         <div style={styles.header}>
           <div style={styles.iconWrapper}>

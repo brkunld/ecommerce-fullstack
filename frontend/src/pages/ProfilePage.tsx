@@ -52,16 +52,16 @@ export default function ProfilePage() {
   };
 
   return (
-    <div style={styles.container}>
+    <div className="page-container profile-page-container">
       {/* Üst Karşılama Alanı */}
-      <div style={styles.header}>
-        <div style={styles.avatarWrapper}>
-          <div style={styles.avatar}>
+      <div className="profile-header">
+        <div className="profile-avatar-wrapper">
+          <div className="profile-avatar">
             <UserIcon size={38} color="#ffffff" />
           </div>
           <div>
-            <div style={styles.nameRow}>
-              <h1 style={styles.userName}>{user.name}</h1>
+            <div className="profile-name-row">
+              <h1 className="profile-user-name">{user.name}</h1>
               {isAdmin ? (
                 <span style={styles.adminBadge}>
                   <ShieldCheck size={14} />
@@ -73,77 +73,77 @@ export default function ProfilePage() {
                 </span>
               )}
             </div>
-            <p style={styles.userEmail}>{user.email}</p>
+            <p className="profile-user-email">{user.email}</p>
           </div>
         </div>
 
-        <button onClick={handleLogout} style={styles.logoutBtn} title="Oturumu Kapat">
+        <button onClick={handleLogout} className="profile-logout-btn" title="Oturumu Kapat">
           <LogOut size={16} />
           <span>Çıkış Yap</span>
         </button>
       </div>
 
-      <div style={styles.layout}>
+      <div className="profile-layout">
         {/* SOL: Profil Bilgileri Kartı */}
-        <div style={styles.card}>
-          <h3 style={styles.cardTitle}>Hesap Bilgileri</h3>
-          <div style={styles.infoList}>
-            <div style={styles.infoItem}>
-              <div style={styles.infoIconBox}>
+        <div className="profile-info-card">
+          <h3 className="profile-card-title">Hesap Bilgileri</h3>
+          <div className="profile-info-list">
+            <div className="profile-info-item">
+              <div className="profile-info-icon-box">
                 <UserIcon size={18} color="#2563eb" />
               </div>
-              <div style={styles.infoContent}>
-                <span style={styles.infoLabel}>Ad Soyad</span>
-                <span style={styles.infoValue}>{user.name}</span>
+              <div className="profile-info-content">
+                <span className="profile-info-label">Ad Soyad</span>
+                <span className="profile-info-value">{user.name}</span>
               </div>
             </div>
 
-            <div style={styles.infoItem}>
-              <div style={styles.infoIconBox}>
+            <div className="profile-info-item">
+              <div className="profile-info-icon-box">
                 <Mail size={18} color="#2563eb" />
               </div>
-              <div style={styles.infoContent}>
-                <span style={styles.infoLabel}>E-posta Adresi</span>
-                <span style={styles.infoValue}>{user.email}</span>
+              <div className="profile-info-content">
+                <span className="profile-info-label">E-posta Adresi</span>
+                <span className="profile-info-value">{user.email}</span>
               </div>
             </div>
 
-            <div style={styles.infoItem}>
-              <div style={styles.infoIconBox}>
+            <div className="profile-info-item">
+              <div className="profile-info-icon-box">
                 <Phone size={18} color="#2563eb" />
               </div>
-              <div style={styles.infoContent}>
-                <span style={styles.infoLabel}>Telefon Numarası</span>
-                <span style={styles.infoValue}>{user.phone || 'Henüz eklenmemiş'}</span>
+              <div className="profile-info-content">
+                <span className="profile-info-label">Telefon Numarası</span>
+                <span className="profile-info-value">{user.phone || 'Henüz eklenmemiş'}</span>
               </div>
             </div>
 
-            <div style={styles.infoItem}>
-              <div style={styles.infoIconBox}>
+            <div className="profile-info-item">
+              <div className="profile-info-icon-box">
                 <MapPin size={18} color="#2563eb" />
               </div>
-              <div style={styles.infoContent}>
-                <span style={styles.infoLabel}>Kayıtlı Adres</span>
-                <span style={styles.infoValue}>{user.address || 'Henüz eklenmemiş'}</span>
+              <div className="profile-info-content">
+                <span className="profile-info-label">Kayıtlı Adres</span>
+                <span className="profile-info-value">{user.address || 'Henüz eklenmemiş'}</span>
               </div>
             </div>
 
-            <div style={styles.infoItem}>
-              <div style={styles.infoIconBox}>
+            <div className="profile-info-item">
+              <div className="profile-info-icon-box">
                 <Calendar size={18} color="#2563eb" />
               </div>
-              <div style={styles.infoContent}>
-                <span style={styles.infoLabel}>Kayıt Tarihi</span>
-                <span style={styles.infoValue}>{formatDate(user.createdAt)}</span>
+              <div className="profile-info-content">
+                <span className="profile-info-label">Kayıt Tarihi</span>
+                <span className="profile-info-value">{formatDate(user.createdAt)}</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* SAĞ: Hızlı Kısayollar ve İşlemler */}
-        <div style={styles.sideCol}>
+        <div className="profile-side-col">
           {/* Siparişlerim Kısayolu */}
-          <Link to="/orders" style={styles.actionCard}>
+          <Link to="/orders" className="profile-action-card">
             <div style={styles.actionIconBox}>
               <Package size={24} color="#2563eb" />
             </div>
@@ -155,7 +155,7 @@ export default function ProfilePage() {
           </Link>
 
           {/* Alışverişe Devam Et Kısayolu */}
-          <Link to="/products" style={styles.actionCard}>
+          <Link to="/products" className="profile-action-card">
             <div style={{ ...styles.actionIconBox, backgroundColor: '#f0fdf4' }}>
               <ShoppingBag size={24} color="#16a34a" />
             </div>
@@ -167,7 +167,7 @@ export default function ProfilePage() {
           </Link>
 
           {/* Güvenlik & Bilgilendirme Kutusu */}
-          <div style={styles.securityBox}>
+          <div className="profile-security-box">
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#0f172a', fontWeight: 600, fontSize: '14px', marginBottom: '6px' }}>
               <ShieldCheck size={18} color="#2563eb" />
               <span>Hesap Güvenliği</span>

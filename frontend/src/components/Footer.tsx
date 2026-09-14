@@ -6,14 +6,14 @@ import { Link } from 'react-router-dom';
 export default function Footer() {
   return (
     <footer style={styles.footer}>
-      <div style={styles.container}>
-        <div style={styles.topSection}>
+      <div className="footer-container" style={styles.container}>
+        <div className="footer-top-section">
           <div style={styles.brand}>
             <div style={styles.logo}>
               <ShoppingBag size={20} color="#ffffff" />
               <span style={styles.logoText}>E-Ticaret</span>
             </div>
-            <p style={styles.desc}>
+            <p className="footer-desc" style={styles.desc}>
               Modern, güvenli ve hızlı tam kapsamlı e-ticaret platformu.
             </p>
           </div>
@@ -32,7 +32,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div style={styles.bottomSection}>
+        <div className="footer-bottom-section">
           <p style={styles.copy}>
             © {new Date().getFullYear()} E-Ticaret Platformu. Tüm hakları saklıdır.
           </p>
@@ -58,12 +58,6 @@ const styles: { [key: string]: React.CSSProperties } = {
     maxWidth: '1240px',
     margin: '0 auto',
     padding: '48px 24px 24px 24px',
-  },
-  topSection: {
-    display: 'grid',
-    gridTemplateColumns: '2fr 1fr 1fr',
-    gap: '36px',
-    marginBottom: '36px',
   },
   brand: {
     display: 'flex',
@@ -103,15 +97,6 @@ const styles: { [key: string]: React.CSSProperties } = {
     textDecoration: 'none',
     fontSize: '13px',
     transition: 'color 0.2s',
-  },
-  bottomSection: {
-    paddingTop: '24px',
-    borderTop: '1px solid #1e293b',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    fontSize: '13px',
-    color: '#64748b',
   },
   copy: {
     margin: 0,

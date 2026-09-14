@@ -43,15 +43,15 @@ export default function CartPage() {
   // Sepet Boş İse Gösterilecek Alan
   if (!cart || !cart.items || cart.items.length === 0) {
     return (
-      <div style={styles.emptyContainer}>
+      <div className="cart-empty-container">
         <div style={styles.emptyIconWrapper}>
           <ShoppingBag size={48} color="#94a3b8" />
         </div>
-        <h2 style={styles.emptyTitle}>Sepetiniz Boş</h2>
-        <p style={styles.emptyDesc}>
+        <h2 className="cart-empty-title">Sepetiniz Boş</h2>
+        <p className="cart-empty-desc">
           Sepetinizde henüz bir ürün bulunmuyor. Binlerce kaliteli ürün arasından dilediğinizi seçip alışverişe başlayabilirsiniz!
         </p>
-        <Link to="/products" style={styles.startShoppingBtn}>
+        <Link to="/products" className="cart-empty-btn">
           <ArrowLeft size={18} />
           <span>Alışverişe Başla</span>
         </Link>
@@ -60,37 +60,36 @@ export default function CartPage() {
   }
 
   return (
-    <div style={styles.container}>
-      <h1 style={styles.pageTitle}>Alışveriş Sepetim ({cart.items.length} Farklı Ürün)</h1>
+    <div className="page-container cart-page-container">
+      <h1 className="cart-title">Alışveriş Sepetim ({cart.items.length} Farklı Ürün)</h1>
 
-      <div style={styles.layout}>
+      <div className="cart-layout">
         {/* SOL SÜTUN: Sepetteki Ürünler Listesi */}
-        <div style={styles.itemsList}>
+        <div className="cart-items-list">
           {cart.items.map((item) => {
             const itemPrice = Number(item.product?.price || 0);
             const lineTotal = itemPrice * item.quantity;
 
             return (
-              <div key={item.id} style={styles.cartItemCard}>
+              <div key={item.id} className="cart-item-card">
                 {/* Ürün Görseli */}
-                <Link to={`/products/${item.productId}`} style={styles.imageLink}>
-                  <img src={getItemImage(item)} alt={item.product?.name} style={styles.itemImage} />
+                <Link to={`/products/${item.productId}`} className="cart-item-image-link">
+                  <img src={getItemImage(item)} alt={item.product?.name} className="cart-item-image" />
                 </Link>
 
                 {/* Ürün Bilgisi */}
-                <div style={styles.itemInfo}>
-                  <Link to={`/products/${item.productId}`} style={styles.itemTitle}>
+                <div className="cart-item-info">
+                  <Link to={`/products/${item.productId}`} className="cart-item-title">
                     {item.product?.name}
                   </Link>
-                  <span style={styles.itemUnitPrice}>{formatPrice(itemPrice)} / adet</span>
+                  <span className="cart-item-price">{formatPrice(itemPrice)} / adet</span>
                 </div>
 
                 {/* Miktar Artırma / Azaltma Kontrolleri */}
-                <div style={styles.quantityControls}>
+                <div className="cart-item-quantity">
                   <button
-                    style={styles.qtyBtn}
+                    className="cart-qty-btn"
                     onClick={() => {
-                      // TODO 1: Miktar azaltma (Eğer quantity > 1 ise updateQuantity ile azalt, 1 ise removeFromCart ile sil)
                       if(item.quantity > 1){
                         updateQuantity(item.id,item.quantity-1);
                       }else{
@@ -100,11 +99,10 @@ export default function CartPage() {
                   >
                     -
                   </button>
-                  <span style={styles.qtyText}>{item.quantity}</span>
+                  <span className="cart-qty-text">{item.quantity}</span>
                   <button
-                    style={styles.qtyBtn}
+                    className="cart-qty-btn"
                     onClick={() => {
-                      // TODO 2: Miktar artırma (updateQuantity ile quantity + 1 yap)
                       updateQuantity(item.id, item.quantity + 1);
                     }}
                   >
@@ -113,16 +111,15 @@ export default function CartPage() {
                 </div>
 
                 {/* Satır Toplam Fiyatı */}
-                <div style={styles.linePriceBox}>
-                  <span style={styles.linePrice}>{formatPrice(lineTotal)}</span>
+                <div className="cart-item-line-price">
+                  <span className="cart-line-price-text">{formatPrice(lineTotal)}</span>
                 </div>
 
                 {/* Silme Butonu */}
                 <button
-                  style={styles.deleteBtn}
+                  className="cart-item-delete-btn"
                   title="Ürünü Sepetten Kaldır"
                   onClick={() => {
-                    // TODO 3: removeFromCart(item.id) çağır
                     removeFromCart(item.id)
                   }}
                 >
@@ -133,11 +130,10 @@ export default function CartPage() {
           })}
 
           {/* Sepeti Boşalt Butonu */}
-          <div style={styles.cartActionsRow}>
+          <div className="cart-actions-row">
             <button
-              style={styles.clearCartBtn}
+              className="cart-clear-btn"
               onClick={() => {
-                // TODO 4: clearCart() çağır
                 clearCart()
               }}
             >
@@ -145,7 +141,7 @@ export default function CartPage() {
               <span>Sepeti Temizle</span>
             </button>
 
-            <Link to="/products" style={styles.continueLink}>
+            <Link to="/products" className="cart-continue-btn">
               <ArrowLeft size={16} />
               <span>Alışverişe Devam Et</span>
             </Link>
@@ -153,34 +149,34 @@ export default function CartPage() {
         </div>
 
         {/* SAĞ SÜTUN: Sipariş Özeti Kartı */}
-        <aside style={styles.summaryCard}>
-          <h3 style={styles.summaryTitle}>Sipariş Özeti</h3>
+        <aside className="cart-summary-card">
+          <h3 className="cart-summary-title">Sipariş Özeti</h3>
 
-          <div style={styles.summaryRow}>
-            <span style={styles.summaryLabel}>Ara Toplam</span>
-            <span style={styles.summaryValue}>{formatPrice(cartTotal)}</span>
+          <div className="cart-summary-row">
+            <span className="cart-summary-label">Ara Toplam</span>
+            <span className="cart-summary-value">{formatPrice(cartTotal)}</span>
           </div>
 
-          <div style={styles.summaryRow}>
-            <span style={styles.summaryLabel}>Kargo</span>
-            <span style={{ ...styles.summaryValue, color: '#16a34a', fontWeight: 600 }}>Ücretsiz</span>
+          <div className="cart-summary-row">
+            <span className="cart-summary-label">Kargo</span>
+            <span className="cart-summary-value" style={{ color: '#16a34a', fontWeight: 600 }}>Ücretsiz</span>
           </div>
 
-          <div style={styles.divider} />
+          <div className="cart-summary-divider" />
 
-          <div style={styles.totalRow}>
-            <span style={styles.totalLabel}>Toplam Tutar</span>
-            <span style={styles.totalValue}>{formatPrice(cartTotal)}</span>
+          <div className="cart-total-row">
+            <span className="cart-total-label">Toplam Tutar</span>
+            <span className="cart-total-value">{formatPrice(cartTotal)}</span>
           </div>
 
           {/* Ödemeye Geç Butonu */}
-          <Link to="/checkout" style={styles.checkoutBtn}>
+          <Link to="/checkout" className="cart-checkout-btn">
             <span>Ödemeye Geç</span>
             <ArrowRight size={18} />
           </Link>
 
           {/* Güvenlik Notu */}
-          <div style={styles.securityNote}>
+          <div className="cart-security-note">
             <ShieldCheck size={18} color="#2563eb" />
             <span>256-Bit SSL Güvenli Alışveriş</span>
           </div>

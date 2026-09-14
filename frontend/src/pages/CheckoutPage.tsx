@@ -73,9 +73,9 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div style={styles.container}>
+    <div className="page-container" style={styles.container}>
       <h1 style={styles.pageTitle}>Ödeme Bilgileri</h1>
-      <div style={styles.layout}>
+      <div className="checkout-layout" style={styles.layout}>
         {/* SOL SÜTUN: Ödeme Formu */}
         <form style={styles.form} onSubmit={handleSubmit}>
           <label style={styles.formLabel}>Teslimat Adresi</label>

@@ -48,15 +48,15 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div style={styles.container}>
+    <div className="home-container" style={styles.container}>
       {/* 1. HERO SECTION */}
-      <section style={styles.heroSection}>
+      <section className="hero-section" style={styles.heroSection}>
         <div style={styles.heroContent}>
           <div style={styles.heroBadge}>
             <Sparkles size={16} color="#2563eb" />
             <span>Yeni Sezon Koleksiyonu</span>
           </div>
-          <h1 style={styles.heroTitle}>
+          <h1 className="hero-title" style={styles.heroTitle}>
             Tarzını Yansıt, <br />
             <span style={{ color: "#2563eb" }}>En İyisini</span> Keşfet.
           </h1>
@@ -73,7 +73,7 @@ export default function HomePage() {
         </div>
 
         {/* 3'lü Güven Rozetleri */}
-        <div style={styles.featuresBar}>
+        <div className="features-bar" style={styles.featuresBar}>
           <div style={styles.featureItem}>
             <div style={styles.featureIconBox}>
               <Truck size={22} color="#2563eb" />
@@ -124,7 +124,7 @@ export default function HomePage() {
         <>
           {/* 2. KATEGORİLER VİTRİNİ */}
           <section style={styles.section}>
-            <div style={styles.sectionHeader}>
+            <div className="section-header" style={styles.sectionHeader}>
               <div>
                 <h2 style={styles.sectionTitle}>Popüler Kategoriler</h2>
                 <p style={styles.sectionSubtitle}>
@@ -136,7 +136,7 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <div style={styles.categoriesGrid}>
+            <div className="categories-grid" style={styles.categoriesGrid}>
               {categories.map((cat) => (
                 <Link
                   key={cat.id}
@@ -152,7 +152,7 @@ export default function HomePage() {
 
           {/* 3. ÖNE ÇIKAN ÜRÜNLER */}
           <section style={styles.section}>
-            <div style={styles.sectionHeader}>
+            <div className="section-header" style={styles.sectionHeader}>
               <div>
                 <h2 style={styles.sectionTitle}>Öne Çıkan Ürünler</h2>
                 <p style={styles.sectionSubtitle}>
@@ -164,7 +164,7 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <div style={styles.productsGrid}>
+            <div className="products-grid" style={styles.productsGrid}>
               {featuredProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}

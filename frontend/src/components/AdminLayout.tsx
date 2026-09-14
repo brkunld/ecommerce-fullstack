@@ -1,5 +1,5 @@
 // frontend/src/components/AdminLayout.tsx
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard,
@@ -9,6 +9,8 @@ import {
   Users,
   Store,
   ShieldCheck,
+  Menu,
+  X,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -19,6 +21,24 @@ interface AdminLayoutProps {
 export default function AdminLayout({ children }: AdminLayoutProps) {
   const location = useLocation();
   const { user } = useAuth();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Sayfa değiştiğinde sidebar'ı kapat
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [location.pathname]);
+
+  // Ekran masaüstü boyutuna büyütüldüğünde mobil sidebar'ı otomatik kapat
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 1024) {
+        setSidebarOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const navItems = [
     { label: 'Dashboard', path: '/admin', icon: <LayoutDashboard size={18} /> },
@@ -29,9 +49,15 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   ];
 
   return (
-    <div style={styles.wrapper}>
+    <div className="admin-wrapper">
+      {/* Mobil overlay */}
+      <div
+        className={`admin-sidebar-overlay ${sidebarOpen ? 'open' : ''}`}
+        onClick={() => setSidebarOpen(false)}
+      />
+
       {/* SOL: Sabit Admin Sidebar */}
-      <aside style={styles.sidebar}>
+      <aside className={`admin-sidebar ${sidebarOpen ? 'open' : ''}`} style={styles.sidebar}>
         <div style={styles.sidebarHeader}>
           <div style={styles.brandIcon}>
             <ShieldCheck size={22} color="#ffffff" />
@@ -50,6 +76,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               <Link
                 key={item.path}
                 to={item.path}
+                onClick={() => setSidebarOpen(false)}
                 style={{
                   ...styles.navLink,
                   backgroundColor: isActive ? '#eff6ff' : 'transparent',
@@ -66,15 +93,24 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
         {/* Alt Kısım: Mağazaya Dön Butonu */}
         <div style={styles.sidebarFooter}>
-          <Link to="/" style={styles.storeLink}>
+          <Link to="/" style={styles.storeLink} onClick={() => setSidebarOpen(false)}>
             <Store size={18} />
             <span>Mağazaya Dön</span>
           </Link>
         </div>
       </aside>
 
+      {/* Mobil sidebar toggle butonu */}
+      <button
+        className="admin-sidebar-toggle"
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+        aria-label="Admin menü"
+      >
+        {sidebarOpen ? <X size={22} /> : <Menu size={22} />}
+      </button>
+
       {/* SAĞ: Sayfa İçerik Alanı */}
-      <main style={styles.mainContent}>
+      <main className="admin-main-content">
         {children}
       </main>
     </div>
@@ -82,11 +118,6 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 }
 
 const styles: { [key: string]: React.CSSProperties } = {
-  wrapper: {
-    display: 'flex',
-    minHeight: 'calc(100vh - 70px)',
-    backgroundColor: '#f8fafc',
-  },
   sidebar: {
     width: '260px',
     backgroundColor: '#ffffff',
@@ -156,10 +187,5 @@ const styles: { [key: string]: React.CSSProperties } = {
     fontSize: '14px',
     fontWeight: 600,
     transition: 'background-color 0.2s ease',
-  },
-  mainContent: {
-    flex: 1,
-    padding: '32px 36px',
-    overflowY: 'auto',
   },
 };

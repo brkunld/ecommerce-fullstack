@@ -262,24 +262,25 @@ export default function OrdersPage() {
   }
 
   return (
-    <div style={styles.container}>
+    <div className="page-container orders-page-container">
       {/* Üst Başlık ve İstatistik Bilgisi */}
-      <div style={styles.headerRow}>
+      <div className="orders-header-row">
         <div>
-          <h1 style={styles.pageTitle}>Siparişlerim</h1>
-          <p style={styles.pageSubtitle}>
+          <h1 className="orders-page-title">Siparişlerim</h1>
+          <p className="orders-page-subtitle">
             Geçmiş ve mevcut tüm siparişlerinizin durumunu buradan takip edebilirsiniz.
           </p>
         </div>
-        <div style={styles.totalBadge}>
+        <div className="orders-total-badge" style={styles.totalBadge}>
           <Package size={18} color="#2563eb" />
           <span>Toplam {orders.length} Sipariş</span>
         </div>
       </div>
 
-      {/* Filtre Sekmeleri */}
-      <div style={styles.tabsContainer}>
+      {/* Filtre Sekmeleri (Kategoriler) */}
+      <div className="orders-tabs-container">
         <button
+          className={`orders-tab-btn ${activeTab === 'ALL' ? 'active' : ''}`}
           style={{
             ...styles.tabBtn,
             ...(activeTab === 'ALL' ? styles.activeTabBtn : {}),
@@ -289,6 +290,7 @@ export default function OrdersPage() {
           Tüm Siparişler ({orders.length})
         </button>
         <button
+          className={`orders-tab-btn ${activeTab === 'ACTIVE' ? 'active' : ''}`}
           style={{
             ...styles.tabBtn,
             ...(activeTab === 'ACTIVE' ? styles.activeTabBtn : {}),
@@ -298,6 +300,7 @@ export default function OrdersPage() {
           Devam Edenler ({orders.filter((o) => ['PENDING', 'PREPARING', 'SHIPPED'].includes(o.status)).length})
         </button>
         <button
+          className={`orders-tab-btn ${activeTab === 'COMPLETED' ? 'active' : ''}`}
           style={{
             ...styles.tabBtn,
             ...(activeTab === 'COMPLETED' ? styles.activeTabBtn : {}),
@@ -309,7 +312,7 @@ export default function OrdersPage() {
       </div>
 
       {/* Sipariş Kartları Listesi */}
-      <div style={styles.ordersList}>
+      <div className="orders-list">
         {filteredOrders.length === 0 ? (
           <div style={styles.noFilterResult}>
             <p style={{ color: '#64748b', fontSize: '15px' }}>Bu filtreye uygun sipariş bulunamadı.</p>
@@ -320,15 +323,15 @@ export default function OrdersPage() {
             const totalItemsCount = order.items.reduce((sum, item) => sum + item.quantity, 0);
 
             return (
-              <div key={order.id} style={styles.orderCard}>
+              <div key={order.id} className="order-card" style={styles.orderCard}>
                 {/* 1. KART BAŞLIĞI (Üst Şerit) */}
-                <div style={styles.cardHeader}>
-                  <div style={styles.cardHeaderCol}>
+                <div className="order-card-header">
+                  <div className="order-header-col">
                     <span style={styles.metaLabel}>SİPARİŞ NUMARASI</span>
                     <span style={styles.orderNumber}>{order.orderNumber}</span>
                   </div>
 
-                  <div style={styles.cardHeaderCol}>
+                  <div className="order-header-col">
                     <span style={styles.metaLabel}>SİPARİŞ TARİHİ</span>
                     <div style={styles.metaWithIcon}>
                       <Calendar size={14} color="#64748b" />
@@ -336,13 +339,14 @@ export default function OrdersPage() {
                     </div>
                   </div>
 
-                  <div style={styles.cardHeaderCol}>
+                  <div className="order-header-col">
                     <span style={styles.metaLabel}>TOPLAM TUTAR</span>
                     <span style={styles.totalPriceText}>{formatPrice(order.totalAmount)}</span>
                   </div>
 
                   {/* Durum Rozeti */}
                   <div
+                    className="order-status-badge-wrapper"
                     style={{
                       ...styles.statusBadge,
                       color: statusConfig.color,
@@ -355,18 +359,18 @@ export default function OrdersPage() {
                   </div>
 
                   {/* Detay Butonu */}
-                  <Link to={`/orders/${order.id}`} style={styles.detailBtn}>
+                  <Link to={`/orders/${order.id}`} className="order-detail-btn" style={styles.detailBtn}>
                     <span>Detayları Gör</span>
                     <ChevronRight size={16} />
                   </Link>
                 </div>
 
                 {/* 2. KART İÇERİĞİ (Ürün Listesi & Bilgiler) */}
-                <div style={styles.cardBody}>
+                <div className="order-card-body">
                   {/* Sol Bölüm: Ürünlerin Önizlemesi */}
-                  <div style={styles.itemsPreview}>
+                  <div className="order-items-preview">
                     {order.items.map((item) => (
-                      <div key={item.id} style={styles.itemRow}>
+                      <div key={item.id} className="order-item-row" style={styles.itemRow}>
                         <div style={styles.imageContainer}>
                           <img
                             src={getProductImage(item.product?.images)}
@@ -388,7 +392,7 @@ export default function OrdersPage() {
                             <span>Birim Fiyat: <strong>{formatPrice(item.price)}</strong></span>
                           </div>
                         </div>
-                        <div style={styles.itemSubtotal}>
+                        <div className="order-item-subtotal" style={styles.itemSubtotal}>
                           {formatPrice(item.price * item.quantity)}
                         </div>
                       </div>
@@ -396,7 +400,7 @@ export default function OrdersPage() {
                   </div>
 
                   {/* Sağ Bölüm: Teslimat & Özet Notu */}
-                  <div style={styles.cardSidebar}>
+                  <div className="order-card-sidebar" style={styles.cardSidebar}>
                     <div style={styles.sidebarBox}>
                       <div style={styles.sidebarTitle}>
                         <MapPin size={16} color="#2563eb" />

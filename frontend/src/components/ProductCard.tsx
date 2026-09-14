@@ -71,7 +71,7 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
   };
 
   return (
-    <div style={styles.card}>
+    <div className="product-card" style={styles.card}>
       {/* Görsel Alanı */}
       <div style={styles.imageContainer}>
         <img src={imageUrl} alt={product.name} style={styles.image} />

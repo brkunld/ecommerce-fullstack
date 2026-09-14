@@ -160,18 +160,18 @@ export default function OrderDetailPage() {
   const statusConfig = getStatusConfig(order.status);
 
   return (
-    <div style={styles.container}>
+    <div className="page-container order-detail-page-container">
       {/* Üst Gezinme Çubuğu */}
-      <Link to="/orders" style={styles.backLink}>
+      <Link to="/orders" className="order-detail-back-link" style={styles.backLink}>
         <ArrowLeft size={18} />
         <span>Siparişlerime Dön</span>
       </Link>
 
       {/* Başlık Alanı (Sipariş Numarası, Tarih ve Durum Rozeti) */}
-      <div style={styles.header}>
+      <div className="order-detail-header">
         <div>
-          <h1 style={styles.title}>Sipariş Detayı</h1>
-          <p style={styles.subtitle}>
+          <h1 className="order-detail-title" style={styles.title}>Sipariş Detayı</h1>
+          <p className="order-detail-subtitle" style={styles.subtitle}>
             Sipariş Numarası: <strong>{order.orderNumber}</strong> •{' '}
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
               <Calendar size={14} />
@@ -181,6 +181,7 @@ export default function OrderDetailPage() {
         </div>
 
         <div
+          className="order-detail-status-badge"
           style={{
             ...styles.badge,
             color: statusConfig.color,
@@ -194,10 +195,10 @@ export default function OrderDetailPage() {
       </div>
 
       {/*  İki Sütunlu Grid Düzeni (Sol: Ürün Listesi, Sağ: Teslimat & Özet Kartı) */}
-      <div style={styles.layout}>
+      <div className="order-detail-layout">
         {/* SOL KOLON: Sipariş Edilen Ürünler (order.items.map) */}
-        <div style={styles.leftCol}>
-          <div style={styles.card}>
+        <div className="order-detail-left-col">
+          <div className="order-detail-card" style={styles.card}>
             <div style={styles.cardHeader}>
               <div style={styles.cardTitle}>
                 <Package size={20} color="#2563eb" />
@@ -206,7 +207,7 @@ export default function OrderDetailPage() {
             </div>
             <div style={styles.itemsList}>
               {order.items.map((item) => (
-                <div key={item.id} style={styles.itemRow}>
+                <div key={item.id} className="order-detail-item-row" style={styles.itemRow}>
                   <Link to={`/products/${item.productId}`} style={styles.itemImageWrapper}>
                     <img
                       src={getProductImage(item.product?.images)}
@@ -222,7 +223,7 @@ export default function OrderDetailPage() {
                       Birim Fiyat: {formatPrice(item.price)} • Adet: <strong>{item.quantity}</strong>
                     </p>
                   </div>
-                  <div style={styles.itemTotal}>
+                  <div className="order-detail-item-total" style={styles.itemTotal}>
                     {formatPrice(item.price * item.quantity)}
                   </div>
                 </div>
@@ -232,7 +233,7 @@ export default function OrderDetailPage() {
         </div>
 
         {/* SAĞ KOLON: Teslimat Adresi, İletişim Telefonu, Sipariş Notu ve Toplam Tutar */}
-        <div style={styles.rightCol}>
+        <div className="order-detail-right-col">
           {/* Teslimat Bilgileri Kartı */}
           <div style={styles.card}>
             <div style={styles.cardHeader}>

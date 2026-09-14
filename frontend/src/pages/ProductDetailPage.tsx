@@ -114,9 +114,9 @@ export default function ProductDetailPage() {
   }
 
   return (
-    <div style={styles.container}>
+    <div className="page-container" style={styles.container}>
       {/* Breadcrumb Navigasyon */}
-      <nav style={styles.breadcrumb}>
+      <nav className="product-breadcrumb" style={styles.breadcrumb}>
         <Link to="/" style={styles.breadcrumbLink}>Ana Sayfa</Link>
         <span style={styles.breadcrumbDivider}>/</span>
         <Link to="/products" style={styles.breadcrumbLink}>Ürünler</Link>
@@ -133,7 +133,7 @@ export default function ProductDetailPage() {
       </nav>
 
       {/* Ana Detay Düzeni */}
-      <div style={styles.detailLayout}>
+      <div className="product-detail-layout" style={styles.detailLayout}>
         {/* SOL: Görsel Galerisi */}
         <div style={styles.galleryArea}>
           <div style={styles.mainImageBox}>
@@ -170,11 +170,11 @@ export default function ProductDetailPage() {
             <span style={styles.categoryBadge}>{product.category.name}</span>
           )}
 
-          <h1 style={styles.productTitle}>{product.name}</h1>
+          <h1 className="product-title" style={styles.productTitle}>{product.name}</h1>
 
           {/* Fiyat Alanı */}
           <div style={styles.priceSection}>
-            <span style={styles.priceValue}>{formattedPrice}</span>
+            <span className="product-price-value" style={styles.priceValue}>{formattedPrice}</span>
             <span style={styles.vatText}>KDV dahildir</span>
           </div>
 
@@ -196,7 +196,7 @@ export default function ProductDetailPage() {
           </div>
 
           {/* Miktar ve Sepete Ekle Butonları */}
-          <div style={styles.purchaseBox}>
+          <div className="product-purchase-box" style={styles.purchaseBox}>
             <div style={styles.quantitySelector}>
               <button
                 disabled={quantity <= 1 || isOutOfStock}
@@ -230,7 +230,7 @@ export default function ProductDetailPage() {
           </div>
 
           {/* 3'lü Güvence Rozetleri */}
-          <div style={styles.guaranteeGrid}>
+          <div className="product-guarantee-grid" style={styles.guaranteeGrid}>
             <div style={styles.guaranteeItem}>
               <Truck size={20} color="#2563eb" />
               <div>

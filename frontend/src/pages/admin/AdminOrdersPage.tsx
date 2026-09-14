@@ -198,24 +198,26 @@ export default function AdminOrdersPage() {
           </div>
         </div>
 
-        {/* Durum Sekmeleri (Filter by Status) */}
-        <div style={styles.statusTabs}>
+        {/* Durum Sekmeleri */}
+        <div className="admin-orders-tabs" style={styles.statusTabs}>
           {[
-            { key: 'ALL', label: 'Tümü' },
-            { key: 'PENDING', label: 'Onay Bekliyor' },
-            { key: 'PREPARING', label: 'Hazırlanıyor' },
-            { key: 'SHIPPED', label: 'Kargoda' },
-            { key: 'DELIVERED', label: 'Teslim Edildi' },
-            { key: 'CANCELLED', label: 'İptal Edildi' },
+            { key: 'ALL', label: 'Tüm Siparişler' },
+            { key: 'PENDING', label: 'Onay Bekleyenler' },
+            { key: 'PREPARING', label: 'Hazırlananlar' },
+            { key: 'SHIPPED', label: 'Kargodakiler' },
+            { key: 'DELIVERED', label: 'Teslim Edilenler' },
+            { key: 'CANCELLED', label: 'İptal Edilenler' },
           ].map((tab) => {
             const isSelected = selectedStatus === tab.key;
-            const count = statusCounts[tab.key as keyof typeof statusCounts] || 0;
+            const count = statusCounts[tab.key as keyof typeof statusCounts];
+
             return (
               <button
                 key={tab.key}
                 onClick={() => setSelectedStatus(tab.key)}
+                className={`admin-order-tab-btn ${isSelected ? 'active' : ''}`}
                 style={{
-                  ...styles.statusTabBtn,
+                  ...styles.tabBtn,
                   backgroundColor: isSelected ? '#0f172a' : '#ffffff',
                   color: isSelected ? '#ffffff' : '#64748b',
                   border: isSelected ? '1px solid #0f172a' : '1px solid #e2e8f0',
@@ -237,8 +239,8 @@ export default function AdminOrdersPage() {
         </div>
 
         {/* Arama Çubuğu */}
-        <div style={styles.filterBar}>
-          <div style={styles.searchBox}>
+        <div className="admin-orders-filter-bar" style={styles.filterBar}>
+          <div className="admin-orders-search-box" style={styles.searchBox}>
             <Search size={18} color="#94a3b8" />
             <input
               type="text"
@@ -284,59 +286,147 @@ export default function AdminOrdersPage() {
               </p>
             </div>
           ) : (
-            <div style={{ overflowX: 'auto' }}>
-              <table style={styles.table}>
-                <thead>
-                  <tr>
-                    <th style={styles.th}>Sipariş No</th>
-                    <th style={styles.th}>Müşteri</th>
-                    <th style={styles.th}>Tarih</th>
-                    <th style={styles.th}>Tutar</th>
-                    <th style={styles.th}>Ürün Adedi</th>
-                    <th style={styles.th}>Durum</th>
-                    <th style={{ ...styles.th, textAlign: 'right' }}>İşlemler</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredOrders.map((order) => {
-                    const badge = statusConfig[order.status] || statusConfig.PENDING;
-                    const totalQty = order.items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
+            <>
+              {/* MASAÜSTÜ TABLO GÖRÜNÜMÜ */}
+              <div className="admin-orders-desktop-table" style={{ overflowX: 'auto' }}>
+                <table style={styles.table}>
+                  <thead>
+                    <tr>
+                      <th style={styles.th}>Sipariş No</th>
+                      <th style={styles.th}>Müşteri</th>
+                      <th style={styles.th}>Tarih</th>
+                      <th style={styles.th}>Tutar</th>
+                      <th style={styles.th}>Ürün Adedi</th>
+                      <th style={styles.th}>Durum</th>
+                      <th style={{ ...styles.th, textAlign: 'right' }}>İşlemler</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredOrders.map((order) => {
+                      const badge = statusConfig[order.status] || statusConfig.PENDING;
+                      const totalQty = order.items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
 
-                    return (
-                      <tr key={order.id} style={styles.tr}>
-                        <td style={styles.td}>
-                          <span style={{ fontWeight: 700, color: '#0f172a', fontFamily: 'monospace' }}>
-                            {order.orderNumber}
-                          </span>
-                        </td>
-                        <td style={styles.td}>
-                          <div>
-                            <div style={{ fontWeight: 600, color: '#0f172a' }}>
+                      return (
+                        <tr key={order.id} style={styles.tr}>
+                          <td style={styles.td}>
+                            <span style={{ fontWeight: 700, color: '#0f172a', fontFamily: 'monospace' }}>
+                              {order.orderNumber}
+                            </span>
+                          </td>
+                          <td style={styles.td}>
+                            <div>
+                              <div style={{ fontWeight: 600, color: '#0f172a' }}>
+                                {order.user?.name || 'Müşteri'}
+                              </div>
+                              <div style={{ fontSize: '12px', color: '#64748b' }}>
+                                {order.user?.email || '—'}
+                              </div>
+                            </div>
+                          </td>
+                          <td style={styles.td}>
+                            <span style={{ fontSize: '13px', color: '#475569' }}>
+                              {formatDate(order.createdAt)}
+                            </span>
+                          </td>
+                          <td style={{ ...styles.td, fontWeight: 800, color: '#0f172a' }}>
+                            {formatPrice(order.totalAmount)}
+                          </td>
+                          <td style={styles.td}>
+                            <span style={styles.countBadge}>{totalQty} ürün</span>
+                          </td>
+                          <td style={styles.td}>
+                            <select
+                              value={order.status}
+                              disabled={updatingStatusId === order.id}
+                              onChange={(e) => handleStatusChange(order.id, e.target.value)}
+                              style={{
+                                ...styles.statusSelect,
+                                backgroundColor: badge.bg,
+                                color: badge.color,
+                                borderColor: badge.border,
+                              }}
+                            >
+                              <option value="PENDING">Onay Bekliyor</option>
+                              <option value="PREPARING">Hazırlanıyor</option>
+                              <option value="SHIPPED">Kargoda</option>
+                              <option value="DELIVERED">Teslim Edildi</option>
+                              <option value="CANCELLED">İptal Edildi</option>
+                            </select>
+                          </td>
+                          <td style={{ ...styles.td, textAlign: 'right' }}>
+                            <button
+                              onClick={() => setSelectedOrder(order)}
+                              style={styles.detailBtn}
+                              title="Sipariş Detayını Görüntüle"
+                            >
+                              <Eye size={16} />
+                              <span>İncele</span>
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* MOBİL SİPARİŞ KARTLARI (Kaydırma gerektirmez) */}
+              <div className="admin-orders-mobile-list">
+                {filteredOrders.map((order) => {
+                  const badge = statusConfig[order.status] || statusConfig.PENDING;
+                  const totalQty = order.items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
+
+                  return (
+                    <div key={order.id} className="admin-order-mobile-card">
+                      {/* Üst Kısım: Sipariş No + İncele Butonu */}
+                      <div className="admin-order-card-header">
+                        <div>
+                          <span className="admin-order-card-num">{order.orderNumber}</span>
+                          <div style={{ fontSize: '12px', color: '#64748b', marginTop: '2px' }}>
+                            {formatDate(order.createdAt)}
+                          </div>
+                        </div>
+
+                        <button
+                          onClick={() => setSelectedOrder(order)}
+                          className="admin-order-card-detail-btn"
+                          title="Detayları İncele"
+                        >
+                          <Eye size={15} />
+                          <span>İncele</span>
+                        </button>
+                      </div>
+
+                      {/* Müşteri ve Tutar Bilgisi */}
+                      <div className="admin-order-card-body">
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+                          <div style={{ minWidth: 0, flex: 1 }}>
+                            <div style={{ fontWeight: 600, color: '#0f172a', fontSize: '14px', wordBreak: 'break-word' }}>
                               {order.user?.name || 'Müşteri'}
                             </div>
-                            <div style={{ fontSize: '12px', color: '#64748b' }}>
+                            <div style={{ fontSize: '12px', color: '#64748b', wordBreak: 'break-all' }}>
                               {order.user?.email || '—'}
                             </div>
                           </div>
-                        </td>
-                        <td style={styles.td}>
-                          <span style={{ fontSize: '13px', color: '#475569' }}>
-                            {formatDate(order.createdAt)}
-                          </span>
-                        </td>
-                        <td style={{ ...styles.td, fontWeight: 800, color: '#0f172a' }}>
-                          {formatPrice(order.totalAmount)}
-                        </td>
-                        <td style={styles.td}>
-                          <span style={styles.countBadge}>{totalQty} ürün</span>
-                        </td>
-                        <td style={styles.td}>
+                          <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                            <div style={{ fontSize: '16px', fontWeight: 800, color: '#0f172a', whiteSpace: 'nowrap' }}>
+                              {formatPrice(order.totalAmount)}
+                            </div>
+                            <span style={styles.countBadge}>{totalQty} ürün</span>
+                          </div>
+                        </div>
+
+                        {/* Durum Seçici (Mobilde tam genişlik) */}
+                        <div style={{ marginTop: '6px' }}>
+                          <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#64748b', marginBottom: '4px', textTransform: 'uppercase' }}>
+                            Sipariş Durumu:
+                          </label>
                           <select
                             value={order.status}
                             disabled={updatingStatusId === order.id}
                             onChange={(e) => handleStatusChange(order.id, e.target.value)}
+                            className="admin-order-card-status-select"
                             style={{
-                              ...styles.statusSelect,
                               backgroundColor: badge.bg,
                               color: badge.color,
                               borderColor: badge.border,
@@ -348,23 +438,13 @@ export default function AdminOrdersPage() {
                             <option value="DELIVERED">Teslim Edildi</option>
                             <option value="CANCELLED">İptal Edildi</option>
                           </select>
-                        </td>
-                        <td style={{ ...styles.td, textAlign: 'right' }}>
-                          <button
-                            onClick={() => setSelectedOrder(order)}
-                            style={styles.detailBtn}
-                            title="Sipariş Detayını Görüntüle"
-                          >
-                            <Eye size={16} />
-                            <span>İncele</span>
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
           )}
         </div>
       </div>
@@ -377,7 +457,7 @@ export default function AdminOrdersPage() {
           <div style={{ ...styles.modalCard, maxWidth: '680px' }}>
             <div style={styles.modalHeader}>
               <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
                   <h2 style={styles.modalTitle}>{selectedOrder.orderNumber}</h2>
                   <span
                     style={{
@@ -401,9 +481,9 @@ export default function AdminOrdersPage() {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               {/* Müşteri ve Teslimat Bilgileri */}
-              <div style={styles.detailGrid}>
+              <div className="admin-modal-detail-grid" style={styles.detailGrid}>
                 {/* Müşteri Bilgileri */}
-                <div style={styles.infoCard}>
+                <div className="admin-info-card" style={styles.infoCard}>
                   <div style={styles.infoCardHeader}>
                     <User size={16} color="#2563eb" />
                     <span>Müşteri Bilgileri</span>
@@ -452,7 +532,7 @@ export default function AdminOrdersPage() {
                 <h4 style={{ fontSize: '15px', fontWeight: 700, color: '#0f172a', marginBottom: '12px' }}>
                   Sipariş Edilen Ürünler ({selectedOrder.items?.length || 0})
                 </h4>
-                <div style={{ border: '1px solid #e2e8f0', borderRadius: '12px', overflow: 'hidden' }}>
+                <div style={{ border: '1px solid #e2e8f0', borderRadius: '12px', overflowX: 'auto' }}>
                   <table style={styles.table}>
                     <thead>
                       <tr>

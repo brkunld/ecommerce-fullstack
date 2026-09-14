@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { ShoppingBag, ShoppingCart, Search, User as UserIcon, LogOut, ShieldCheck, Package } from 'lucide-react';
+import { ShoppingBag, ShoppingCart, Search, User as UserIcon, LogOut, ShieldCheck, Package, Menu, X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 
@@ -10,6 +10,7 @@ export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchTerm, setSearchTerm] = useState('');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // URL'deki arama parametresini navbar kutusuyla senkronize et
   useEffect(() => {
@@ -22,6 +23,23 @@ export default function Navbar() {
     }
   }, [location.search, location.pathname]);
 
+  // Sayfa değiştiğinde mobil menüyü kapat
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
+
+  // Ekran büyütüldüğünde (masaüstü genişliğine geçince) mobil menüyü otomatik kapat
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchTerm.trim()) {
@@ -29,16 +47,18 @@ export default function Navbar() {
     } else {
       navigate('/products');
     }
+    setMobileMenuOpen(false);
   };
 
   const handleLogout = () => {
     logout();
     navigate('/login');
+    setMobileMenuOpen(false);
   };
 
   return (
     <header style={styles.header}>
-      <div style={styles.container}>
+      <div className="navbar-container" style={{ position: 'relative' }}>
         {/* Logo */}
         <Link to="/" style={styles.logo}>
           <div style={styles.logoIcon}>
@@ -47,8 +67,8 @@ export default function Navbar() {
           <span style={styles.logoText}>E-Ticaret</span>
         </Link>
 
-        {/* Arama Çubuğu */}
-        <form onSubmit={handleSearch} style={styles.searchForm}>
+        {/* Arama Çubuğu (Desktop) */}
+        <form onSubmit={handleSearch} className="navbar-search-form" style={styles.searchForm}>
           <Search size={18} color="#94a3b8" style={styles.searchIcon} />
           <input
             type="text"
@@ -59,8 +79,8 @@ export default function Navbar() {
           />
         </form>
 
-        {/* Menü Linkleri & Kullanıcı Durumu */}
-        <nav style={styles.navActions}>
+        {/* Menü Linkleri & Kullanıcı Durumu (Desktop) */}
+        <nav className="navbar-actions" style={styles.navActions}>
           <Link to="/products" style={styles.navLink}>
             Ürünler
           </Link>
@@ -70,23 +90,7 @@ export default function Navbar() {
             <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
               <ShoppingCart size={20} color="#334155" />
               {cartCount > 0 && (
-                <span
-                  style={{
-                    position: 'absolute',
-                    top: '-8px',
-                    right: '-10px',
-                    backgroundColor: '#ef4444',
-                    color: '#ffffff',
-                    fontSize: '11px',
-                    fontWeight: 700,
-                    width: '18px',
-                    height: '18px',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
+                <span style={styles.cartBadge}>
                   {cartCount}
                 </span>
               )}
@@ -97,13 +101,11 @@ export default function Navbar() {
           {/* Giriş Durumuna Göre Değişen Alan */}
           {user ? (
             <div style={styles.userMenu}>
-              {/* Siparişlerim */}
               <Link to="/orders" style={styles.ordersLink} title="Siparişlerim">
                 <Package size={18} color="#475569" />
                 <span>Siparişlerim</span>
               </Link>
 
-              {/* Admin Paneli Butonu (Yalnızca ADMIN kullanıcılar için) */}
               {isAdmin && (
                 <Link to="/admin" style={styles.adminBadge} title="Yönetici Paneli">
                   <ShieldCheck size={16} color="#059669" />
@@ -111,13 +113,11 @@ export default function Navbar() {
                 </Link>
               )}
 
-              {/* Kullanıcı Adı / Profil Linki */}
               <Link to="/profile" style={styles.userNameBadge} title="Profilimi Görüntüle">
                 <UserIcon size={16} color="#2563eb" />
                 <span style={styles.userName}>{user.name}</span>
               </Link>
 
-              {/* Çıkış Yap Butonu */}
               <button onClick={handleLogout} style={styles.logoutButton} title="Çıkış Yap">
                 <LogOut size={18} color="#dc2626" />
                 <span>Çıkış</span>
@@ -134,6 +134,98 @@ export default function Navbar() {
             </div>
           )}
         </nav>
+
+        {/* Hamburger Butonu (Mobil) */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          {/* Mobil sepet ikonu */}
+          <Link to="/cart" className="navbar-hamburger" style={{ textDecoration: 'none', position: 'relative' }}>
+            <ShoppingCart size={22} color="#334155" />
+            {cartCount > 0 && (
+              <span style={{ ...styles.cartBadge, top: '-6px', right: '-8px' }}>
+                {cartCount}
+              </span>
+            )}
+          </Link>
+          <button
+            className="navbar-hamburger"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Menü"
+          >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+
+        {/* Mobil Menü */}
+        <div className={`navbar-mobile-menu ${mobileMenuOpen ? 'open' : ''}`}>
+          {/* Mobil Arama */}
+          <form onSubmit={handleSearch} className="mobile-search-form">
+            <Search size={18} color="#94a3b8" style={{ position: 'absolute', left: '14px', pointerEvents: 'none' }} />
+            <input
+              type="text"
+              placeholder="Ürün ara..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="mobile-search-input"
+            />
+          </form>
+
+          <Link to="/products" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>
+            <Package size={18} />
+            Ürünler
+          </Link>
+
+          <Link to="/cart" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>
+            <ShoppingCart size={18} />
+            Sepetim {cartCount > 0 && `(${cartCount})`}
+          </Link>
+
+          {user ? (
+            <>
+              <Link to="/orders" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>
+                <Package size={18} />
+                Siparişlerim
+              </Link>
+
+              <Link to="/profile" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>
+                <UserIcon size={18} />
+                {user.name}
+              </Link>
+
+              {isAdmin && (
+                <Link to="/admin" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>
+                  <ShieldCheck size={18} />
+                  Admin Paneli
+                </Link>
+              )}
+
+              <button
+                onClick={handleLogout}
+                className="mobile-nav-link"
+                style={{ background: '#fef2f2', border: '1px solid #fee2e2', color: '#dc2626', cursor: 'pointer', width: '100%' }}
+              >
+                <LogOut size={18} />
+                Çıkış Yap
+              </button>
+            </>
+          ) : (
+            <div className="mobile-auth-buttons">
+              <Link
+                to="/login"
+                style={{ backgroundColor: '#eff6ff', color: '#2563eb', border: '1px solid #bfdbfe' }}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Giriş Yap
+              </Link>
+              <Link
+                to="/register"
+                style={{ backgroundColor: '#2563eb', color: '#ffffff' }}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Kayıt Ol
+              </Link>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );
@@ -147,15 +239,6 @@ const styles: { [key: string]: React.CSSProperties } = {
     top: 0,
     zIndex: 50,
     boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05)',
-  },
-  container: {
-    maxWidth: '1240px',
-    margin: '0 auto',
-    padding: '14px 24px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: '24px',
   },
   logo: {
     display: 'flex',
@@ -231,6 +314,21 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   cartText: {
     fontSize: '14px',
+  },
+  cartBadge: {
+    position: 'absolute' as const,
+    top: '-8px',
+    right: '-10px',
+    backgroundColor: '#ef4444',
+    color: '#ffffff',
+    fontSize: '11px',
+    fontWeight: 700,
+    width: '18px',
+    height: '18px',
+    borderRadius: '50%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   userMenu: {
     display: 'flex',
