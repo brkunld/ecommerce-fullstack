@@ -151,7 +151,7 @@ export default function AdminCategoriesPage() {
     <AdminLayout>
       <div style={styles.container}>
         {/* Üst Başlık & Buton */}
-        <div style={styles.header}>
+        <div className="admin-categories-header" style={styles.header}>
           <div>
             <h1 style={styles.pageTitle}>Kategori Yönetimi</h1>
             <p style={styles.pageSubtitle}>
@@ -165,8 +165,8 @@ export default function AdminCategoriesPage() {
         </div>
 
         {/* Arama Çubuğu */}
-        <div style={styles.filterBar}>
-          <div style={styles.searchBox}>
+        <div className="admin-categories-filter-bar" style={styles.filterBar}>
+          <div className="admin-categories-search-box" style={styles.searchBox}>
             <Search size={18} color="#94a3b8" />
             <input
               type="text"
@@ -210,77 +210,144 @@ export default function AdminCategoriesPage() {
               </p>
             </div>
           ) : (
-            <div style={{ overflowX: 'auto' }}>
-              <table style={styles.table}>
-                <thead>
-                  <tr>
-                    <th style={styles.th}>Görsel / Kategori</th>
-                    <th style={styles.th}>Slug (URL)</th>
-                    <th style={styles.th}>Açıklama</th>
-                    <th style={styles.th}>Ürün Sayısı</th>
-                    <th style={{ ...styles.th, textAlign: 'right' }}>İşlemler</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredCategories.map((c) => (
-                    <tr key={c.id} style={styles.tr}>
-                      <td style={styles.td}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                          {c.image ? (
-                            <img
-                              src={c.image}
-                              alt={c.name}
-                              style={{ width: '44px', height: '44px', borderRadius: '10px', objectFit: 'cover' }}
-                            />
-                          ) : (
-                            <div style={styles.avatarPlaceholder}>
-                              <FolderTree size={20} color="#2563eb" />
+            <>
+              {/* MASAÜSTÜ TABLOSU */}
+              <div className="admin-categories-desktop-table" style={{ overflowX: 'auto' }}>
+                <table style={styles.table}>
+                  <thead>
+                    <tr>
+                      <th style={styles.th}>Görsel / Kategori</th>
+                      <th style={styles.th}>Slug (URL)</th>
+                      <th style={styles.th}>Açıklama</th>
+                      <th style={styles.th}>Ürün Sayısı</th>
+                      <th style={{ ...styles.th, textAlign: 'right' }}>İşlemler</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredCategories.map((c) => (
+                      <tr key={c.id} style={styles.tr}>
+                        <td style={styles.td}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                            {c.image ? (
+                              <img
+                                src={c.image}
+                                alt={c.name}
+                                style={{ width: '44px', height: '44px', borderRadius: '10px', objectFit: 'cover' }}
+                              />
+                            ) : (
+                              <div style={styles.avatarPlaceholder}>
+                                <FolderTree size={20} color="#2563eb" />
+                              </div>
+                            )}
+                            <div>
+                              <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '14px' }}>{c.name}</div>
                             </div>
-                          )}
-                          <div>
-                            <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '14px' }}>{c.name}</div>
+                          </div>
+                        </td>
+                        <td style={styles.td}>
+                          <code style={styles.slugCode}>{c.slug}</code>
+                        </td>
+                        <td style={styles.td}>
+                          <span style={{ color: '#64748b', fontSize: '13px' }}>
+                            {c.description || '—'}
+                          </span>
+                        </td>
+                        <td style={styles.td}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <Package size={15} color="#64748b" />
+                            <span style={styles.countBadge}>
+                              {c._count?.products ?? 0} ürün
+                            </span>
+                          </div>
+                        </td>
+                        <td style={{ ...styles.td, textAlign: 'right' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '8px' }}>
+                            <button
+                              onClick={() => handleOpenEditModal(c)}
+                              style={styles.iconBtn}
+                              title="Kategoriyi Düzenle"
+                            >
+                              <Edit2 size={16} color="#2563eb" />
+                            </button>
+                            <button
+                              onClick={() => setDeletingCategory(c)}
+                              style={{ ...styles.iconBtn, color: '#dc2626' }}
+                              title="Kategoriyi Sil"
+                            >
+                              <Trash2 size={16} color="#dc2626" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* MOBİL KATEGORİ KARTLARI (<= 768px Kaydırma gerektirmez) */}
+              <div className="admin-categories-mobile-list">
+                {filteredCategories.map((c) => (
+                  <div key={c.id} className="admin-category-mobile-card">
+                    {/* Üst Kısım: Görsel/İkon + Başlık + Slug + Ürün Sayısı */}
+                    <div className="admin-category-card-top">
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1, minWidth: 0 }}>
+                        {c.image ? (
+                          <img
+                            src={c.image}
+                            alt={c.name}
+                            className="admin-category-card-img"
+                          />
+                        ) : (
+                          <div style={styles.avatarPlaceholder} className="admin-category-card-placeholder">
+                            <FolderTree size={20} color="#2563eb" />
+                          </div>
+                        )}
+                        <div style={{ minWidth: 0, flex: 1 }}>
+                          <div className="admin-category-card-name">{c.name}</div>
+                          <div style={{ marginTop: '3px' }}>
+                            <code style={styles.slugCode}>{c.slug}</code>
                           </div>
                         </div>
-                      </td>
-                      <td style={styles.td}>
-                        <code style={styles.slugCode}>{c.slug}</code>
-                      </td>
-                      <td style={styles.td}>
-                        <span style={{ color: '#64748b', fontSize: '13px' }}>
-                          {c.description || '—'}
+                      </div>
+
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}>
+                        <Package size={14} color="#64748b" />
+                        <span style={styles.countBadge}>
+                          {c._count?.products ?? 0} ürün
                         </span>
-                      </td>
-                      <td style={styles.td}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <Package size={15} color="#64748b" />
-                          <span style={styles.countBadge}>
-                            {c._count?.products ?? 0} ürün
-                          </span>
-                        </div>
-                      </td>
-                      <td style={{ ...styles.td, textAlign: 'right' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '8px' }}>
-                          <button
-                            onClick={() => handleOpenEditModal(c)}
-                            style={styles.iconBtn}
-                            title="Kategoriyi Düzenle"
-                          >
-                            <Edit2 size={16} color="#2563eb" />
-                          </button>
-                          <button
-                            onClick={() => setDeletingCategory(c)}
-                            style={{ ...styles.iconBtn, color: '#dc2626' }}
-                            title="Kategoriyi Sil"
-                          >
-                            <Trash2 size={16} color="#dc2626" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                      </div>
+                    </div>
+
+                    {/* Orta Kısım: Açıklama (varsa) */}
+                    {c.description && (
+                      <div className="admin-category-card-desc">
+                        {c.description}
+                      </div>
+                    )}
+
+                    {/* Alt Kısım: Butonlar */}
+                    <div className="admin-category-card-actions">
+                      <button
+                        onClick={() => handleOpenEditModal(c)}
+                        className="admin-category-card-edit-btn"
+                        title="Kategoriyi Düzenle"
+                      >
+                        <Edit2 size={15} />
+                        <span>Düzenle</span>
+                      </button>
+                      <button
+                        onClick={() => setDeletingCategory(c)}
+                        className="admin-category-card-delete-btn"
+                        title="Kategoriyi Sil"
+                      >
+                        <Trash2 size={15} />
+                        <span>Sil</span>
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
           )}
         </div>
       </div>
@@ -290,7 +357,7 @@ export default function AdminCategoriesPage() {
       {/* ========================================================================= */}
       {isModalOpen && (
         <div style={styles.modalOverlay}>
-          <div style={styles.modalCard}>
+          <div className="admin-modal-card" style={styles.modalCard}>
             <div style={styles.modalHeader}>
               <h2 style={styles.modalTitle}>
                 {editingCategory ? 'Kategoriyi Düzenle' : 'Yeni Kategori Ekle'}

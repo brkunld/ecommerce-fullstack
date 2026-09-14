@@ -149,13 +149,13 @@ export default function AdminDashboardPage() {
     <AdminLayout>
       <div style={styles.container}>
         {/* Üst Başlık */}
-        <div style={styles.header}>
+        <div className="admin-dashboard-header" style={styles.header}>
           <h1 style={styles.pageTitle}>Admin Dashboard</h1>
           <p style={styles.pageSubtitle}>Mağazanızın anlık performans özeti ve kritik bildirimleri</p>
         </div>
 
         {/* 4 ADET İSTATİSTİK KARTI */}
-        <div style={styles.statsGrid}>
+        <div className="admin-dashboard-stats-grid" style={styles.statsGrid}>
           {/* 1. Toplam Gelir Kartı */}
           <div style={styles.statCard}>
             <div style={{ ...styles.statIconBox, backgroundColor: '#f0fdf4' }}>
@@ -202,7 +202,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* İKİ BÜYÜK TABLO BÖLÜMÜ (Kritik Stok & Son Siparişler) */}
-        <div style={styles.tablesGrid}>
+        <div className="admin-dashboard-tables-grid" style={styles.tablesGrid}>
           {/* TABLO 1: Kritik / Düşük Stoklu Ürünler */}
           <div style={styles.card}>
             <div style={styles.cardHeader}>
@@ -215,55 +215,90 @@ export default function AdminDashboardPage() {
               </Link>
             </div>
 
-            <div style={styles.tableWrapper}>
-              {lowStockProducts && lowStockProducts.length > 0 ? (
-                <table style={styles.table}>
-                  <thead>
-                    <tr>
-                      <th style={styles.th}>Ürün</th>
-                      <th style={styles.th}>Kategori</th>
-                      <th style={styles.th}>Fiyat</th>
-                      <th style={styles.th}>Kalan Stok</th>
-                      <th style={{ ...styles.th, textAlign: 'right' }}>İşlem</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {lowStockProducts.map((p) => (
-                      <tr key={p.id} style={styles.tr}>
-                        <td style={styles.td}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                            <img
-                              src={getProductImage(p.images)}
-                              alt={p.name}
-                              style={{ width: '40px', height: '40px', borderRadius: '8px', objectFit: 'cover' }}
-                            />
-                            <span style={{ fontWeight: 600, color: '#0f172a' }}>{p.name}</span>
-                          </div>
-                        </td>
-                        <td style={styles.td}>
-                          <span style={{ color: '#64748b' }}>{p.category?.name || '-'}</span>
-                        </td>
-                        <td style={styles.td}>{formatPrice(p.price)}</td>
-                        <td style={styles.td}>
-                          <span style={styles.lowStockBadge}>
-                            {p.stock === 0 ? 'Tükendi (0)' : `${p.stock} adet kaldı`}
-                          </span>
-                        </td>
-                        <td style={{ ...styles.td, textAlign: 'right' }}>
-                          <Link to="/admin/products" style={styles.tableBtn}>
-                            Yönet
-                          </Link>
-                        </td>
+            {lowStockProducts && lowStockProducts.length > 0 ? (
+              <>
+                {/* Masaüstü Tablosu */}
+                <div className="admin-dashboard-desktop-table" style={styles.tableWrapper}>
+                  <table style={styles.table}>
+                    <thead>
+                      <tr>
+                        <th style={styles.th}>Ürün</th>
+                        <th style={styles.th}>Kategori</th>
+                        <th style={styles.th}>Fiyat</th>
+                        <th style={styles.th}>Kalan Stok</th>
+                        <th style={{ ...styles.th, textAlign: 'right' }}>İşlem</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              ) : (
-                <div style={styles.emptyCardContent}>
-                  <p style={styles.emptyText}>Tüm ürünlerin stok durumu yeterli seviyede. 🎉</p>
+                    </thead>
+                    <tbody>
+                      {lowStockProducts.map((p) => (
+                        <tr key={p.id} style={styles.tr}>
+                          <td style={styles.td}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                              <img
+                                src={getProductImage(p.images)}
+                                alt={p.name}
+                                style={{ width: '40px', height: '40px', borderRadius: '8px', objectFit: 'cover' }}
+                              />
+                              <span style={{ fontWeight: 600, color: '#0f172a' }}>{p.name}</span>
+                            </div>
+                          </td>
+                          <td style={styles.td}>
+                            <span style={{ color: '#64748b' }}>{p.category?.name || '-'}</span>
+                          </td>
+                          <td style={styles.td}>{formatPrice(p.price)}</td>
+                          <td style={styles.td}>
+                            <span style={styles.lowStockBadge}>
+                              {p.stock === 0 ? 'Tükendi (0)' : `${p.stock} adet kaldı`}
+                            </span>
+                          </td>
+                          <td style={{ ...styles.td, textAlign: 'right' }}>
+                            <Link to="/admin/products" style={styles.tableBtn}>
+                              Yönet
+                            </Link>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
-              )}
-            </div>
+
+                {/* Mobil Kart Listesi (<= 768px) */}
+                <div className="admin-dashboard-mobile-list">
+                  {lowStockProducts.map((p) => (
+                    <div key={p.id} className="admin-dashboard-mobile-item">
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flex: 1, minWidth: 0 }}>
+                        <img
+                          src={getProductImage(p.images)}
+                          alt={p.name}
+                          style={{ width: '44px', height: '44px', borderRadius: '8px', objectFit: 'cover', flexShrink: 0 }}
+                        />
+                        <div style={{ minWidth: 0 }}>
+                          <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '13px', wordBreak: 'break-word' }}>
+                            {p.name}
+                          </div>
+                          <div style={{ fontSize: '12px', color: '#64748b', marginTop: '2px' }}>
+                            {formatPrice(p.price)} • {p.category?.name || 'Kategorisiz'}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px', flexShrink: 0 }}>
+                        <span style={styles.lowStockBadge}>
+                          {p.stock === 0 ? 'Tükendi' : `${p.stock} adet`}
+                        </span>
+                        <Link to="/admin/products" style={{ ...styles.tableBtn, padding: '4px 10px', fontSize: '12px' }}>
+                          Yönet
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div style={styles.emptyCardContent}>
+                <p style={styles.emptyText}>Tüm ürünlerin stok durumu yeterli seviyede. 🎉</p>
+              </div>
+            )}
           </div>
 
           {/* TABLO 2: Son Verilen Siparişler */}
@@ -278,64 +313,114 @@ export default function AdminDashboardPage() {
               </Link>
             </div>
 
-            <div style={styles.tableWrapper}>
-              {recentOrders && recentOrders.length > 0 ? (
-                <table style={styles.table}>
-                  <thead>
-                    <tr>
-                      <th style={styles.th}>Sipariş No</th>
-                      <th style={styles.th}>Müşteri</th>
-                      <th style={styles.th}>Tarih</th>
-                      <th style={styles.th}>Tutar</th>
-                      <th style={styles.th}>Durum</th>
-                      <th style={{ ...styles.th, textAlign: 'right' }}>Detay</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {recentOrders.map((order) => {
-                      const badge = getStatusBadge(order.status);
-                      const customerName = (order as any).user?.name || 'Müşteri';
-                      return (
-                        <tr key={order.id} style={styles.tr}>
-                          <td style={styles.td}>
-                            <span style={{ fontWeight: 700, color: '#0f172a' }}>{order.orderNumber}</span>
-                          </td>
-                          <td style={styles.td}>
-                            <span style={{ color: '#334155', fontWeight: 500 }}>{customerName}</span>
-                          </td>
-                          <td style={styles.td}>{formatDate(order.createdAt)}</td>
-                          <td style={{ ...styles.td, fontWeight: 700, color: '#0f172a' }}>
-                            {formatPrice(order.totalAmount)}
-                          </td>
-                          <td style={styles.td}>
+            {recentOrders && recentOrders.length > 0 ? (
+              <>
+                {/* Masaüstü Tablosu */}
+                <div className="admin-dashboard-desktop-table" style={styles.tableWrapper}>
+                  <table style={styles.table}>
+                    <thead>
+                      <tr>
+                        <th style={styles.th}>Sipariş No</th>
+                        <th style={styles.th}>Müşteri</th>
+                        <th style={styles.th}>Tarih</th>
+                        <th style={styles.th}>Tutar</th>
+                        <th style={styles.th}>Durum</th>
+                        <th style={{ ...styles.th, textAlign: 'right' }}>Detay</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {recentOrders.map((order) => {
+                        const badge = getStatusBadge(order.status);
+                        const customerName = (order as any).user?.name || 'Müşteri';
+                        return (
+                          <tr key={order.id} style={styles.tr}>
+                            <td style={styles.td}>
+                              <span style={{ fontWeight: 700, color: '#0f172a' }}>{order.orderNumber}</span>
+                            </td>
+                            <td style={styles.td}>
+                              <span style={{ color: '#334155', fontWeight: 500 }}>{customerName}</span>
+                            </td>
+                            <td style={styles.td}>{formatDate(order.createdAt)}</td>
+                            <td style={{ ...styles.td, fontWeight: 700, color: '#0f172a' }}>
+                              {formatPrice(order.totalAmount)}
+                            </td>
+                            <td style={styles.td}>
+                              <span
+                                style={{
+                                  ...styles.statusBadge,
+                                  backgroundColor: badge.bg,
+                                  color: badge.color,
+                                  borderColor: badge.border,
+                                }}
+                              >
+                                {badge.label}
+                              </span>
+                            </td>
+                            <td style={{ ...styles.td, textAlign: 'right' }}>
+                              <Link to={`/orders/${order.id}`} style={styles.tableBtn}>
+                                <span>İncele</span>
+                                <ExternalLink size={12} style={{ marginLeft: '4px' }} />
+                              </Link>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Mobil Kart Listesi (<= 768px) */}
+                <div className="admin-dashboard-mobile-list">
+                  {recentOrders.map((order) => {
+                    const badge = getStatusBadge(order.status);
+                    const customerName = (order as any).user?.name || 'Müşteri';
+                    return (
+                      <div key={order.id} className="admin-dashboard-mobile-item">
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                            <span style={{ fontWeight: 700, fontFamily: 'monospace', color: '#0f172a', fontSize: '13px' }}>
+                              {order.orderNumber}
+                            </span>
                             <span
                               style={{
                                 ...styles.statusBadge,
                                 backgroundColor: badge.bg,
                                 color: badge.color,
                                 borderColor: badge.border,
+                                fontSize: '11px',
+                                padding: '2px 8px',
                               }}
                             >
                               {badge.label}
                             </span>
-                          </td>
-                          <td style={{ ...styles.td, textAlign: 'right' }}>
-                            <Link to={`/orders/${order.id}`} style={styles.tableBtn}>
-                              <span>İncele</span>
-                              <ExternalLink size={12} style={{ marginLeft: '4px' }} />
-                            </Link>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              ) : (
+                          </div>
+                          <div style={{ fontSize: '12px', color: '#64748b', marginTop: '3px' }}>
+                            {customerName} • {formatDate(order.createdAt)}
+                          </div>
+                        </div>
+
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px', flexShrink: 0 }}>
+                          <span style={{ fontWeight: 800, color: '#0f172a', fontSize: '14px' }}>
+                            {formatPrice(order.totalAmount)}
+                          </span>
+                          <Link
+                            to={`/orders/${order.id}`}
+                            style={{ ...styles.tableBtn, padding: '4px 10px', fontSize: '12px' }}
+                          >
+                            <span>İncele</span>
+                            <ExternalLink size={11} style={{ marginLeft: '3px' }} />
+                          </Link>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </>
+            ) : (
                 <div style={styles.emptyCardContent}>
                   <p style={styles.emptyText}>Henüz hiç sipariş verilmemiş.</p>
                 </div>
               )}
-            </div>
           </div>
         </div>
       </div>

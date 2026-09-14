@@ -274,7 +274,7 @@ export default function AdminProductsPage() {
     <AdminLayout>
       <div style={styles.container}>
         {/* Üst Başlık & Yeni Ürün Ekle Butonu */}
-        <div style={styles.header}>
+        <div className="admin-products-header" style={styles.header}>
           <div>
             <h1 style={styles.pageTitle}>Ürün Yönetimi</h1>
             <p style={styles.pageSubtitle}>
@@ -288,8 +288,8 @@ export default function AdminProductsPage() {
         </div>
 
         {/* Filtreleme ve Arama Çubuğu */}
-        <div style={styles.filterBar}>
-          <form onSubmit={handleSearchSubmit} style={styles.searchBox}>
+        <div className="admin-products-filter-bar" style={styles.filterBar}>
+          <form onSubmit={handleSearchSubmit} className="admin-products-search-box" style={styles.searchBox}>
             <Search size={18} color="#94a3b8" />
             <input
               type="text"
@@ -315,6 +315,7 @@ export default function AdminProductsPage() {
 
           {/* Kategori Filtresi */}
           <select
+            className="admin-products-category-select"
             value={selectedCategory}
             onChange={(e) => {
               setSelectedCategory(e.target.value);
@@ -355,50 +356,168 @@ export default function AdminProductsPage() {
               </p>
             </div>
           ) : (
-            <div style={{ overflowX: 'auto' }}>
-              <table style={styles.table}>
-                <thead>
-                  <tr>
-                    <th style={styles.th}>Ürün</th>
-                    <th style={styles.th}>Kategori</th>
-                    <th style={styles.th}>Fiyat</th>
-                    <th style={styles.th}>Hızlı Stok</th>
-                    <th style={styles.th}>Durum</th>
-                    <th style={{ ...styles.th, textAlign: 'right' }}>İşlemler</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {products.map((p) => {
-                    const isLowStock = p.stock <= 5;
-                    const isOutOfStock = p.stock === 0;
+            <>
+              {/* MASAÜSTÜ TABLOSU */}
+              <div className="admin-products-desktop-table" style={{ overflowX: 'auto' }}>
+                <table style={styles.table}>
+                  <thead>
+                    <tr>
+                      <th style={styles.th}>Ürün</th>
+                      <th style={styles.th}>Kategori</th>
+                      <th style={styles.th}>Fiyat</th>
+                      <th style={styles.th}>Hızlı Stok</th>
+                      <th style={styles.th}>Durum</th>
+                      <th style={{ ...styles.th, textAlign: 'right' }}>İşlemler</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {products.map((p) => {
+                      const isLowStock = p.stock <= 5;
+                      const isOutOfStock = p.stock === 0;
 
-                    return (
-                      <tr key={p.id} style={styles.tr}>
-                        <td style={styles.td}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                            <img
-                              src={getProductImage(p.images)}
-                              alt={p.name}
-                              style={{ width: '48px', height: '48px', borderRadius: '10px', objectFit: 'cover' }}
-                            />
-                            <div>
-                              <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '14px' }}>{p.name}</div>
-                              <div style={{ fontSize: '12px', color: '#64748b', marginTop: '2px' }}>
-                                {p.featured && (
-                                  <span style={styles.featuredBadge}>Öne Çıkan</span>
-                                )}
+                      return (
+                        <tr key={p.id} style={styles.tr}>
+                          <td style={styles.td}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                              <img
+                                src={getProductImage(p.images)}
+                                alt={p.name}
+                                style={{ width: '48px', height: '48px', borderRadius: '10px', objectFit: 'cover' }}
+                              />
+                              <div>
+                                <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '14px' }}>{p.name}</div>
+                                <div style={{ fontSize: '12px', color: '#64748b', marginTop: '2px' }}>
+                                  {p.featured && (
+                                    <span style={styles.featuredBadge}>Öne Çıkan</span>
+                                  )}
+                                </div>
                               </div>
                             </div>
+                          </td>
+                          <td style={styles.td}>
+                            <span style={styles.categoryBadge}>{p.category?.name || 'Kategorisiz'}</span>
+                          </td>
+                          <td style={{ ...styles.td, fontWeight: 700, color: '#0f172a' }}>
+                            {formatPrice(p.price)}
+                          </td>
+                          <td style={styles.td}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                              <button
+                                onClick={() => handleQuickStock(p, -1)}
+                                disabled={p.stock === 0}
+                                style={{
+                                  ...styles.stockBtn,
+                                  opacity: p.stock === 0 ? 0.4 : 1,
+                                  cursor: p.stock === 0 ? 'not-allowed' : 'pointer',
+                                }}
+                                title="1 Azalt"
+                              >
+                                -
+                              </button>
+                              <span
+                                style={{
+                                  ...styles.stockBadge,
+                                  backgroundColor: isOutOfStock ? '#fef2f2' : isLowStock ? '#fffbeb' : '#f0fdf4',
+                                  color: isOutOfStock ? '#dc2626' : isLowStock ? '#d97706' : '#16a34a',
+                                }}
+                              >
+                                {p.stock}
+                              </span>
+                              <button
+                                onClick={() => handleQuickStock(p, 1)}
+                                style={styles.stockBtn}
+                                title="1 Artır"
+                              >
+                                +
+                              </button>
+                            </div>
+                          </td>
+                          <td style={styles.td}>
+                            <span
+                              style={{
+                                ...styles.statusBadge,
+                                backgroundColor: p.isActive !== false ? '#f0fdf4' : '#f1f5f9',
+                                color: p.isActive !== false ? '#16a34a' : '#64748b',
+                              }}
+                            >
+                              {p.isActive !== false ? 'Aktif' : 'Pasif'}
+                            </span>
+                          </td>
+                          <td style={{ ...styles.td, textAlign: 'right' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '8px' }}>
+                              <button
+                                onClick={() => handleOpenEditModal(p)}
+                                style={styles.iconBtn}
+                                title="Ürünü Düzenle"
+                              >
+                                <Edit2 size={16} color="#2563eb" />
+                              </button>
+                              <button
+                                onClick={() => setDeletingProduct(p)}
+                                style={{ ...styles.iconBtn, color: '#dc2626' }}
+                                title="Ürünü Sil"
+                              >
+                                <Trash2 size={16} color="#dc2626" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* MOBİL ÜRÜN KARTLARI (<= 768px Kaydırma gerektirmez) */}
+              <div className="admin-products-mobile-list">
+                {products.map((p) => {
+                  const isLowStock = p.stock <= 5;
+                  const isOutOfStock = p.stock === 0;
+
+                  return (
+                    <div key={p.id} className="admin-product-mobile-card">
+                      {/* Üst Bilgi: Görsel, Başlık, Kategori, Durum */}
+                      <div className="admin-product-card-top">
+                        <img
+                          src={getProductImage(p.images)}
+                          alt={p.name}
+                          className="admin-product-card-img"
+                        />
+                        <div className="admin-product-card-info">
+                          <div className="admin-product-card-title">{p.name}</div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap', marginTop: '4px' }}>
+                            <span style={styles.categoryBadge}>{p.category?.name || 'Kategorisiz'}</span>
+                            {p.featured && (
+                              <span style={styles.featuredBadge}>Öne Çıkan</span>
+                            )}
                           </div>
-                        </td>
-                        <td style={styles.td}>
-                          <span style={styles.categoryBadge}>{p.category?.name || 'Kategorisiz'}</span>
-                        </td>
-                        <td style={{ ...styles.td, fontWeight: 700, color: '#0f172a' }}>
-                          {formatPrice(p.price)}
-                        </td>
-                        <td style={styles.td}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        </div>
+                        <span
+                          style={{
+                            ...styles.statusBadge,
+                            alignSelf: 'flex-start',
+                            backgroundColor: p.isActive !== false ? '#f0fdf4' : '#f1f5f9',
+                            color: p.isActive !== false ? '#16a34a' : '#64748b',
+                            fontSize: '11px',
+                            padding: '3px 8px',
+                          }}
+                        >
+                          {p.isActive !== false ? 'Aktif' : 'Pasif'}
+                        </span>
+                      </div>
+
+                      {/* Orta Bilgi: Fiyat ve Hızlı Stok */}
+                      <div className="admin-product-card-middle">
+                        <div>
+                          <div style={{ fontSize: '11px', color: '#64748b', fontWeight: 500 }}>Fiyat</div>
+                          <div style={{ fontSize: '16px', fontWeight: 800, color: '#0f172a' }}>
+                            {formatPrice(p.price)}
+                          </div>
+                        </div>
+
+                        <div className="admin-product-card-stock-control">
+                          <span style={{ fontSize: '12px', color: '#64748b', fontWeight: 500 }}>Stok:</span>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                             <button
                               onClick={() => handleQuickStock(p, -1)}
                               disabled={p.stock === 0}
@@ -428,42 +547,33 @@ export default function AdminProductsPage() {
                               +
                             </button>
                           </div>
-                        </td>
-                        <td style={styles.td}>
-                          <span
-                            style={{
-                              ...styles.statusBadge,
-                              backgroundColor: p.isActive !== false ? '#f0fdf4' : '#f1f5f9',
-                              color: p.isActive !== false ? '#16a34a' : '#64748b',
-                            }}
-                          >
-                            {p.isActive !== false ? 'Aktif' : 'Pasif'}
-                          </span>
-                        </td>
-                        <td style={{ ...styles.td, textAlign: 'right' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '8px' }}>
-                            <button
-                              onClick={() => handleOpenEditModal(p)}
-                              style={styles.iconBtn}
-                              title="Ürünü Düzenle"
-                            >
-                              <Edit2 size={16} color="#2563eb" />
-                            </button>
-                            <button
-                              onClick={() => setDeletingProduct(p)}
-                              style={{ ...styles.iconBtn, color: '#dc2626' }}
-                              title="Ürünü Sil"
-                            >
-                              <Trash2 size={16} color="#dc2626" />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+                        </div>
+                      </div>
+
+                      {/* Alt Butonlar: Düzenle & Sil */}
+                      <div className="admin-product-card-actions">
+                        <button
+                          onClick={() => handleOpenEditModal(p)}
+                          className="admin-product-card-edit-btn"
+                          title="Ürünü Düzenle"
+                        >
+                          <Edit2 size={15} />
+                          <span>Düzenle</span>
+                        </button>
+                        <button
+                          onClick={() => setDeletingProduct(p)}
+                          className="admin-product-card-delete-btn"
+                          title="Ürünü Sil"
+                        >
+                          <Trash2 size={15} />
+                          <span>Sil</span>
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
           )}
 
           {/* Sayfalama (Pagination) */}
@@ -498,7 +608,7 @@ export default function AdminProductsPage() {
       {/* ========================================================================= */}
       {isModalOpen && (
         <div style={styles.modalOverlay}>
-          <div style={styles.modalCard}>
+          <div className="admin-modal-card" style={styles.modalCard}>
             <div style={styles.modalHeader}>
               <h2 style={styles.modalTitle}>
                 {editingProduct ? 'Ürünü Düzenle' : 'Yeni Ürün Ekle'}
@@ -516,7 +626,7 @@ export default function AdminProductsPage() {
             )}
 
             <form onSubmit={handleSaveProduct} style={styles.form}>
-              <div style={styles.formRow}>
+              <div className="admin-modal-form-row" style={styles.formRow}>
                 <div style={styles.formGroup}>
                   <label style={styles.label}>Ürün Adı *</label>
                   <input
@@ -547,7 +657,7 @@ export default function AdminProductsPage() {
                 </div>
               </div>
 
-              <div style={styles.formRow}>
+              <div className="admin-modal-form-row" style={styles.formRow}>
                 <div style={styles.formGroup}>
                   <label style={styles.label}>Fiyat (TL) *</label>
                   <input

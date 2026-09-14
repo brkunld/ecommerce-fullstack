@@ -2398,11 +2398,17 @@ html, body {
    ADMİN SİPARİŞ YÖNETİMİ (AdminOrdersPage)
    ============================================================================= */
 
-.admin-orders-desktop-table {
+.admin-orders-desktop-table,
+.admin-products-desktop-table,
+.admin-categories-desktop-table,
+.admin-dashboard-desktop-table {
   overflow-x: auto;
 }
 
-.admin-orders-mobile-list {
+.admin-orders-mobile-list,
+.admin-products-mobile-list,
+.admin-categories-mobile-list,
+.admin-dashboard-mobile-list {
   display: none;
 }
 
@@ -2719,6 +2725,363 @@ html, body {
     padding-top: 4px;
     font-size: 15px !important;
     border-top: 1px dashed #f1f5f9;
+  }
+
+  /* ===========================================================================
+     ADMİN ÜRÜNLER (AdminProductsPage)
+     =========================================================================== */
+  .admin-products-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 14px !important;
+  }
+
+  .admin-products-header button {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .admin-products-filter-bar {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+
+  .admin-products-search-box {
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .admin-products-category-select {
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .admin-products-desktop-table {
+    display: none !important;
+  }
+
+  .admin-products-mobile-list {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    padding: 12px !important;
+  }
+
+  .admin-product-mobile-card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 14px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .admin-product-card-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .admin-product-card-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .admin-product-card-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .admin-product-card-title {
+    font-weight: 700;
+    font-size: 14px;
+    color: #0f172a;
+    word-break: break-word;
+    line-height: 1.3;
+  }
+
+  .admin-product-card-middle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 0;
+    border-top: 1px dashed #f1f5f9;
+    border-bottom: 1px dashed #f1f5f9;
+  }
+
+  .admin-product-card-stock-control {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .admin-product-card-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .admin-product-card-edit-btn,
+  .admin-product-card-delete-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .admin-product-card-edit-btn {
+    background-color: #eff6ff;
+    color: #2563eb;
+    border: 1px solid #dbeafe;
+  }
+
+  .admin-product-card-delete-btn {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fee2e2;
+  }
+
+  /* ===========================================================================
+     ADMİN KATEGORİLER (AdminCategoriesPage)
+     =========================================================================== */
+  .admin-categories-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 14px !important;
+  }
+
+  .admin-categories-header button {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .admin-categories-filter-bar {
+    width: 100% !important;
+  }
+
+  .admin-categories-search-box {
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .admin-categories-desktop-table {
+    display: none !important;
+  }
+
+  .admin-categories-mobile-list {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    padding: 12px !important;
+  }
+
+  .admin-category-mobile-card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 14px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .admin-category-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .admin-category-card-img {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .admin-category-card-placeholder {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+
+  .admin-category-card-name {
+    font-weight: 700;
+    font-size: 14px;
+    color: #0f172a;
+    word-break: break-word;
+  }
+
+  .admin-category-card-desc {
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.4;
+    word-break: break-word;
+  }
+
+  .admin-category-card-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding-top: 4px;
+    border-top: 1px dashed #f1f5f9;
+  }
+
+  .admin-category-card-edit-btn,
+  .admin-category-card-delete-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .admin-category-card-edit-btn {
+    background-color: #eff6ff;
+    color: #2563eb;
+    border: 1px solid #dbeafe;
+  }
+
+  .admin-category-card-delete-btn {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fee2e2;
+  }
+
+  /* ===========================================================================
+     ADMİN DASHBOARD (AdminDashboardPage)
+     =========================================================================== */
+  .admin-dashboard-header {
+    margin-bottom: 20px !important;
+  }
+
+  .admin-dashboard-stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+    margin-bottom: 24px !important;
+  }
+
+  .admin-dashboard-tables-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  .admin-dashboard-desktop-table {
+    display: none !important;
+  }
+
+  .admin-dashboard-mobile-list {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    padding: 12px !important;
+  }
+
+  .admin-dashboard-mobile-item {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    padding: 10px 12px !important;
+    background-color: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 10px !important;
+  }
+
+  /* ===========================================================================
+     ADMİN MODALLAR
+     =========================================================================== */
+  .admin-modal-card {
+    max-width: 100% !important;
+    margin: 10px !important;
+    padding: 18px !important;
+    box-sizing: border-box !important;
+  }
+
+  .admin-modal-form-row {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  /* ===========================================================================
+     ANA SAYFA (HomePage)
+     =========================================================================== */
+  .home-container {
+    padding: 0 16px 48px 16px !important;
+  }
+
+  .hero-section {
+    padding: 28px 0 16px 0 !important;
+  }
+
+  .hero-title {
+    font-size: 30px !important;
+    line-height: 1.2 !important;
+  }
+
+  .hero-desc {
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    margin-bottom: 20px !important;
+  }
+
+  .features-bar {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+    padding: 16px !important;
+    margin-top: 32px !important;
+  }
+
+  .categories-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+}
+
+/* =============================================================================
+   EKSTRA KÜÇÜK EKRANLAR (<= 480px)
+   ============================================================================= */
+@media (max-width: 480px) {
+  .admin-dashboard-stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .hero-title {
+    font-size: 24px !important;
+  }
+
+  .categories-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .products-grid {
+    grid-template-columns: 1fr !important;
   }
 }
 
