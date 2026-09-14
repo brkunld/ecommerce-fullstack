@@ -9,10 +9,8 @@ export const getDashboardStatsController = async (
   next: NextFunction,
 ) => {
   try {
-    // TODO 1: adminService.getDashboardStats() fonksiyonunu çağırın
     const data = await adminService.getDashboardStats();
 
-    // TODO 2: res.status(200).json({ status: "success", data }) ile sonucu dönün
     res.status(200).json({
       status: "success",
       data,

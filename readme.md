@@ -737,12 +737,12 @@ Admin kullanıcılar için ayrı bir yönetim paneli oluşturulacaktır.
 
 ### Dashboard
 
-- [ ] Total users
-- [ ] Total products
-- [ ] Total orders
-- [ ] Total revenue
-- [ ] Low-stock products
-- [ ] Recent orders
+- [x] Total users
+- [x] Total products
+- [x] Total orders
+- [x] Total revenue
+- [x] Low-stock products
+- [x] Recent orders
 
 ### Product Management
 
