@@ -768,9 +768,9 @@ Admin kullanıcılar için ayrı bir yönetim paneli oluşturulacaktır.
 
 ### User Management
 
-- [ ] User list
-- [ ] User details
-- [ ] Role management
+- [x] User list
+- [x] User details
+- [x] Role management
 
 **Hedef:**
 

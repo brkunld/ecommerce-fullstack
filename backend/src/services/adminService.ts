@@ -40,3 +40,73 @@ export const getDashboardStats = async () => {
     recentOrders,
   };
 };
+
+export const getAllUsers = async () => {
+  return prisma.user.findMany({
+    orderBy: { createdAt: "desc" },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      phone: true,
+      address: true,
+      createdAt: true,
+      _count: {
+        select: { orders: true },
+      },
+    },
+  });
+};
+
+export const getUserById = async (userId: string) => {
+  return prisma.user.findUnique({
+    where: { id: userId },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      phone: true,
+      address: true,
+      createdAt: true,
+      orders: {
+        orderBy: { createdAt: "desc" },
+        select: {
+          id: true,
+          orderNumber: true,
+          status: true,
+          totalAmount: true,
+          createdAt: true,
+          _count: {
+            select: { items: true },
+          },
+        },
+      },
+    },
+  });
+};
+
+export const updateUserRole = async (
+  userId: string,
+  role: "CUSTOMER" | "ADMIN",
+  currentAdminId?: string,
+) => {
+  if (userId === currentAdminId && role !== "ADMIN") {
+    throw new Error("Kendi admin yetkinizi kaldıramazsınız.");
+  }
+
+  return prisma.user.update({
+    where: { id: userId },
+    data: { role },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      phone: true,
+      address: true,
+      createdAt: true,
+    },
+  });
+};

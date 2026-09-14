@@ -12,3 +12,10 @@ export const loginSchema = z.object({
   email: z.string().email("Geçerli bir e-posta adresi giriniz"),
   password: z.string().min(1, "Şifre boş bırakılamaz"),
 });
+
+export const updateUserRoleSchema = z.object({
+  role: z.enum(["CUSTOMER", "ADMIN"], {
+    errorMap: () => ({ message: "Rol CUSTOMER veya ADMIN olmalıdır" }),
+  }),
+});
+
