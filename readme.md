@@ -754,10 +754,10 @@ Admin kullanıcılar için ayrı bir yönetim paneli oluşturulacaktır.
 
 ### Category Management
 
-- [ ] Category list
-- [ ] Create category
-- [ ] Edit category
-- [ ] Delete category
+- [x] Category list
+- [x] Create category
+- [x] Edit category
+- [x] Delete category
 
 ### Order Management
 

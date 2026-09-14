@@ -4,6 +4,11 @@ import { slugify } from "../utils/slugify.js";
 export const getAllCategories = () => {
   return prisma.category.findMany({
     orderBy: { createdAt: "desc" },
+    include: {
+      _count: {
+        select: { products: true },
+      },
+    },
   });
 };
 
