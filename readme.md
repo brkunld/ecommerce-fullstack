@@ -782,29 +782,41 @@ E-ticaret sisteminin tüm yönetim işlemlerinin gerçekleştirilebildiği bir a
 
 Uygulamanın container ortamında çalıştırılması.
 
-- [ ] Docker temelleri
-- [ ] Dockerfile
-- [ ] Docker image
-- [ ] Docker container
-- [ ] Docker Compose
-- [ ] Backend container
-- [ ] PostgreSQL container
-- [ ] Frontend container
-- [ ] Environment variables
-- [ ] Development environment
+- [x] Docker temelleri
+- [x] Dockerfile
+- [x] Docker image
+- [x] Docker container
+- [x] Docker Compose
+- [x] Backend container
+- [x] PostgreSQL container
+- [x] Frontend container
+- [x] Environment variables
+- [x] Development environment
+
+### 🚀 Docker ile Tek Komutla Çalıştırma
+
+Tüm sistemi (PostgreSQL, Express API ve React Frontend) container mimarisiyle ayağa kaldırmak için:
+
+```bash
+docker compose up --build
+```
+
+Servis adresleri:
+- 💻 **Frontend:** [http://localhost:5173](http://localhost:5173)
+- ⚙️ **Backend REST API:** [http://localhost:5000](http://localhost:5000)
+- 🩺 **Health Check:** [http://localhost:5000/api/health](http://localhost:5000/api/health)
+- 🐘 **PostgreSQL:** `localhost:5432`
 
 Örnek yapı:
 
 ```text
 Docker Compose
 │
-├── Frontend
+├── Frontend (React + Vite) [5173]
 │
-├── Backend
+├── Backend (Express + TypeScript) [5000]
 │
-├── PostgreSQL
-│
-└── Redis
+└── PostgreSQL 16 (Volume kalıcı depolama) [5432]
 ```
 
 **Hedef:**
